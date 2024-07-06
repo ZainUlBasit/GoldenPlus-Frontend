@@ -1,0 +1,42 @@
+export const CompanyAccountsColumns = [
+  {
+    id: "name",
+    title: "Name",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "description",
+    title: "Description",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "total",
+    title: "Total",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "paid",
+    title: "Paid",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "remaining",
+    title: "Payable",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+];
