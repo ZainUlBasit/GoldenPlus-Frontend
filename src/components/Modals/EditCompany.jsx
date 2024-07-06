@@ -23,7 +23,7 @@ const EditCompany = ({ open, setOpen, CurrentCompany }) => {
   const dispatch = useDispatch();
 
   const AuthState = useSelector((state) => state.AuthState);
-  console.log(AuthState.data.role === 2);
+  // console.log(AuthState.data.role === 2);
   // console.log(AuthState.data?.branchId?.branch_number || "");
 
   const handleSubmit = async (e) => {

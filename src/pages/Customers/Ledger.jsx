@@ -10,15 +10,20 @@ import { CustomerItemLedgerColumns } from "../../utils/ColumnsData/ItemLedgerCol
 import { CashLedgerColumns } from "../../utils/ColumnsData/CashLedgerColumns";
 import CustomerNav from "../../components/Navigations/CustomerNav";
 import Navbar from "../../components/Navbar/Navbar";
+import { fetchReturnLedger } from "../../store/Slices/ReturnSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
   const [OpenCashLedger, setOpenCashLedger] = useState(false);
+  const [OpenReturnLedger, setOpenReturnLedger] = useState(false);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [CurrentCustomer, setCurrentCustomer] = useState("");
   const CustomerState = useSelector((state) => state.CustomerState);
   const PaymentState = useSelector((state) => state.PaymentState);
+  const ReturnState = useSelector((state) => state.ReturnState);
+  const navigate = useNavigate();
   const CustomerItemLegderState = useSelector(
     (state) => state.CustomerItemLegderState
   );
@@ -53,7 +58,14 @@ export default function CustomerLedger() {
           customerId: CurrentCustomer,
           from: fromDate,
           to: toDate,
-          // branch: 1,
+        })
+      );
+    } else if (OpenReturnLedger) {
+      dispatch(
+        fetchReturnLedger({
+          customerId: CurrentCustomer,
+          from: fromDate,
+          to: toDate,
         })
       );
     }
@@ -73,6 +85,7 @@ export default function CustomerLedger() {
       <ItemLedgerCard
         setOpenCashLedger={setOpenCashLedger}
         setOpenItemLedger={setOpenItemLedger}
+        setOpenReturnLedger={setOpenReturnLedger}
         fromDate={fromDate}
         toDate={toDate}
         setFromDate={setFromDate}
@@ -86,11 +99,29 @@ export default function CustomerLedger() {
         (CustomerItemLegderState.loading ? (
           <ProcessLoader />
         ) : (
-          <SimpleTable
-            columns={CustomerItemLedgerColumns}
-            title={"Item Ledger Details"}
-            rows={CustomerItemLegderState.data}
-          />
+          <>
+            <SimpleTable
+              columns={CustomerItemLedgerColumns}
+              title={"Item Ledger Details"}
+              rows={CustomerItemLegderState.data}
+            />
+            <div className="flex gap-x-2 my-5">
+              <div
+                className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
+                onClick={() => {
+                  navigate("/customer/item-ledger-report", {
+                    state: {
+                      id: CurrentCustomer, // Your state data here
+                      from: fromDate,
+                      to: toDate,
+                    },
+                  });
+                }}
+              >
+                Print Item Ledger
+              </div>
+            </div>
+          </>
         ))}
       {OpenCashLedger &&
         (PaymentState.loading ? (
@@ -100,6 +131,17 @@ export default function CustomerLedger() {
             columns={CashLedgerColumns}
             title={"Cash Ledger Details"}
             rows={PaymentState.data}
+          />
+        ))}
+
+      {OpenReturnLedger &&
+        (ReturnState.loading ? (
+          <ProcessLoader />
+        ) : (
+          <SimpleTable
+            columns={CustomerItemLedgerColumns}
+            title={"Return Ledger Details"}
+            rows={ReturnState.data}
           />
         ))}
     </div>

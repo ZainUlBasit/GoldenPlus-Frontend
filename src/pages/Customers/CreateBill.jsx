@@ -26,6 +26,8 @@ import { CheckInvoiceNoApi, CreateTransactionApi } from "../../Https";
 import { ErrorToast, SuccessToast, WarningToast } from "../../utils/ShowToast";
 import SimpleTable from "../../components/Tables/SimpleTable";
 import { BillItemColumns } from "../../utils/ColumnsData/BillItemColumns";
+import { useNavigate } from "react-router-dom";
+import AddingLoader from "../../components/Loaders/AddingLoader";
 
 export default function CreateBill() {
   const [CurrentCustomer, setCurrentCustomer] = useState("");
@@ -54,6 +56,7 @@ export default function CreateBill() {
   const [ItemSize, setItemSize] = useState("");
   const [Loading, setLoading] = useState(false);
   const AuthState = useSelector((state) => state.AuthState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
@@ -221,6 +224,7 @@ export default function CreateBill() {
       else {
         SuccessToast(response.data?.data?.msg);
         resetStates();
+        navigate("/customer/invoice/detail/" + BillNo);
       }
     } catch (err) {
       ErrorToast(err.response?.data?.error?.msg || err?.message);
@@ -462,19 +466,22 @@ export default function CreateBill() {
           </div>
         </>
       )}
-      {!BillNoExists && NewItems.length !== 0 && (
-        <div className="flex gap-x-2 mb-5">
-          <div
-            className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
-            onClick={HandleSubmit}
-          >
-            Add
+      {!BillNoExists &&
+        NewItems.length !== 0 &&
+        (Loading ? (
+          <div className="flex gap-x-2 mb-5">
+            <AddingLoader />
           </div>
-          <div className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold">
-            Add & Print
+        ) : (
+          <div className="flex gap-x-2 mb-5">
+            <div
+              className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
+              onClick={HandleSubmit}
+            >
+              Add
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </div>
   );
 }

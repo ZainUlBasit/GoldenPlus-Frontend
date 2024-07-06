@@ -57,3 +57,55 @@ export const CustomerItemLedgerColumns = [
     web4: "35px",
   },
 ];
+
+export const EditInvoiceColumns = [
+  {
+    id: "actions",
+    title: "Actions",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "article_name",
+    title: "Article Name",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "article_size",
+    title: "Size",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "qty",
+    title: "Quantity",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+
+  {
+    id: "price",
+    title: "Price",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "amount",
+    title: "Total Amount",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+];

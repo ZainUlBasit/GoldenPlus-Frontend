@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL, BASE_URL_LOCAL } from "../assets/config";
 
 const token = localStorage.getItem("token");
 export const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: BASE_URL,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
@@ -12,7 +13,7 @@ export const api = axios.create({
 });
 
 export const apiForImage = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: BASE_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -94,13 +95,19 @@ export const CreateTransactionApi = (payload) =>
   api.post("/transaction/create", payload);
 export const GetTransactionByIdApi = (payload) =>
   api.post("/transaction/all", payload);
+export const DeleteInvoiceApi = (payload) =>
+  api.post("/transaction/delete", payload);
 
 // RETURN REQUEST
 // export const CreateReturnApi = (payload) => api.post("/return", payload);
-export const GetReturnByIdApi = (payload) =>
-  api.post("/return/get-by-id", payload);
+// export const GetReturnByIdApi = (payload) =>
+// api.post("/return/get-by-id", payload);
 export const CreateReturnApi = (payload) =>
   api.post("/sale-return/create", payload);
+export const GetReturnsByIdApi = (payload) =>
+  api.post("/sale-return/branch", payload);
+export const DeleteReturnsInvoiceApi = (payload) =>
+  api.post("/sale-return/delete", payload);
 
 // Statistics
 export const GetCompanyInfoStatsApi = () => api.get("/stats/company_info");

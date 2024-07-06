@@ -25,6 +25,9 @@ import CompanyStats from "./pages/Reports/CompanyStats";
 import BranchesInfo from "./pages/Branches/Info";
 import RM_Stats from "./pages/Company/RM_Stats";
 import EditInvoice from "./pages/Customers/EditInvoice";
+import NewBillInvoice from "./components/Invoices/NewBillInvoice";
+import ReturnInvoice from "./components/Invoices/ReturnInvoice";
+import ItemLedgerReport from "./components/Invoices/ItemLedgerReport";
 
 const router = createBrowserRouter([
   {
@@ -124,10 +127,34 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/customer/invoice/detail/:id",
+    element: (
+      <ProtectedRoute>
+        <NewBillInvoice />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/customer/return-invoice/detail/:id",
+    element: (
+      <ProtectedRoute>
+        <ReturnInvoice />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/customer/create-bill",
     element: (
       <ProtectedRoute>
         <CreateBill />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/customer/item-ledger-report",
+    element: (
+      <ProtectedRoute>
+        <ItemLedgerReport />
       </ProtectedRoute>
     ),
   },

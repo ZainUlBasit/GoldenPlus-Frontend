@@ -8,6 +8,7 @@ import { Popover, Typography } from "@mui/material";
 const ItemLedgerCard = ({
   setOpenCashLedger,
   setOpenItemLedger,
+  setOpenReturnLedger,
   setSelectUser,
   SelectUser,
   Users,
@@ -198,6 +199,7 @@ const ItemLedgerCard = ({
               onClick={() => {
                 setOpenCashLedger(false);
                 setOpenItemLedger(true);
+                setOpenReturnLedger(false);
               }}
             >
               <div className="flex items-center gap-x-2 px-5">
@@ -212,11 +214,27 @@ const ItemLedgerCard = ({
               onClick={() => {
                 setOpenItemLedger(false);
                 setOpenCashLedger(true);
+                setOpenReturnLedger(false);
               }}
             >
               <div className="flex items-center gap-x-2 px-5">
                 <span className="text-xl font-bold whitespace-nowrap">
                   Cash Ledger
+                </span>
+              </div>
+            </motion.div>
+            <motion.div
+              className={`hover:bg-[#394b92] bg-[#000] hover:rounded-lg text-white w-fit px-3 py-3 transition-all ease-in-out duration-500 cursor-pointer`}
+              variants={item}
+              onClick={() => {
+                setOpenItemLedger(false);
+                setOpenCashLedger(false);
+                setOpenReturnLedger(true);
+              }}
+            >
+              <div className="flex items-center gap-x-2 px-5">
+                <span className="text-xl font-bold whitespace-nowrap">
+                  Return Ledger
                 </span>
               </div>
             </motion.div>

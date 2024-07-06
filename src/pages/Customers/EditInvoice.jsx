@@ -25,6 +25,8 @@ import CustomInput from "../../components/Inputs/CustomInput";
 import {
   CheckInvoiceNoApi,
   CreateTransactionApi,
+  DeleteInvoiceApi,
+  DeleteReturnsInvoiceApi,
   GetBillNoApi,
   GetInvoiceDataApi,
 } from "../../Https";
@@ -32,6 +34,9 @@ import { ErrorToast, SuccessToast, WarningToast } from "../../utils/ShowToast";
 import SimpleTable from "../../components/Tables/SimpleTable";
 import { BillItemColumns } from "../../utils/ColumnsData/BillItemColumns";
 import ProcessLoader from "../../components/Loader/ProcessLoader";
+import AddingLoader from "../../components/Loaders/AddingLoader";
+import { useNavigate } from "react-router-dom";
+import DeleteModal from "../../components/Modals/DeleteModal";
 
 export default function EditInvoice() {
   const [CurrentCustomer, setCurrentCustomer] = useState("");
@@ -61,6 +66,7 @@ export default function EditInvoice() {
   const [Loading, setLoading] = useState(false);
   const AuthState = useSelector((state) => state.AuthState);
   const [BillNos, setBillNos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
@@ -116,8 +122,8 @@ export default function EditInvoice() {
     setAnchorElBillNo(null);
   };
 
-  const handleBillSelect = (customer) => {
-    setCurrentBillNo(customer);
+  const handleBillSelect = (bill) => {
+    setCurrentBillNo(bill);
     handleCloseBillNo();
   };
 
@@ -209,6 +215,7 @@ export default function EditInvoice() {
   }, [NewItems, Discount]);
 
   // const HandleSubmit = async () => {
+
   //   setLoading(true);
   //   try {
   //     if (Payment !== "" && Number(Payment) > 0) {
@@ -264,6 +271,9 @@ export default function EditInvoice() {
   //     setLoading(false);
   //   }, 4000);
   // };
+
+  const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
+  const [Deleting, setDeleting] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -486,6 +496,72 @@ export default function EditInvoice() {
             />
           </div>
         </div>
+      )}
+
+      {CurrentInvoiceData.Data && (
+        <div className="flex gap-x-2 mb-5">
+          <div
+            className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
+            onClick={() => {
+              if (CurrentBillNo.type === 1)
+                navigate(
+                  "/customer/invoice/detail/" + CurrentBillNo.invoice_no
+                );
+              else if (CurrentBillNo.type === 2)
+                navigate(
+                  "/customer/return-invoice/detail/" + CurrentBillNo.invoice_no
+                );
+            }}
+          >
+            Print
+          </div>
+          <div
+            className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
+            onClick={() => {
+              setOpenDeleteModal(true);
+            }}
+          >
+            Delete Invoice
+          </div>
+        </div>
+      )}
+
+      {OpenDeleteModal && (
+        <DeleteModal
+          Open={OpenDeleteModal}
+          setOpen={setOpenDeleteModal}
+          onSubmit={async () => {
+            setDeleting(true);
+            try {
+              // console.log(CurrentInvoiceData.Invoice_Info.customerId._id,);
+              if (CurrentBillNo.type === 1) {
+                const response = await DeleteInvoiceApi({
+                  customerId: CurrentInvoiceData.Invoice_Info.customerId._id,
+                  invoice_no: CurrentInvoiceData.Invoice_Info.invoice_no,
+                });
+                if (response.data.success) {
+                  console.log(response);
+                  setOpenDeleteModal(false);
+                  SuccessToast("Invoice Successfully deleted!");
+                }
+              } else if (CurrentBillNo.type === 2) {
+                const response = await DeleteReturnsInvoiceApi({
+                  customerId: CurrentInvoiceData.Invoice_Info.customerId._id,
+                  invoice_no: CurrentInvoiceData.Invoice_Info.invoice_no,
+                });
+                if (response.data.success) {
+                  console.log(response);
+                  setOpenDeleteModal(false);
+                  SuccessToast("Return Invoice Successfully deleted!");
+                }
+              }
+            } catch (err) {
+              ErrorToast(err.response.data.error.msg);
+            }
+            setDeleting(false);
+          }}
+          Loading={Deleting}
+        />
       )}
     </div>
   );

@@ -1,11 +1,19 @@
-export const BillItemColumns = [
+export const ReportItemColumns = [
+  {
+    id: "date",
+    title: "Date",
+  },
+  {
+    id: "invoice_no",
+    title: "Invoice #",
+  },
   {
     id: "article_name",
-    title: "Article", // Assuming "article" is part of the "Item" referenced by "itemId"
+    title: "Article",
   },
   {
     id: "article_size",
-    title: "Size", // Assuming "article" is part of the "Item" referenced by "itemId"
+    title: "Size",
   },
   {
     id: "qty",
