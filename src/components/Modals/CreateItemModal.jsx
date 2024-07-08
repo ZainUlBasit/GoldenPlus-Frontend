@@ -10,6 +10,7 @@ import { fetchArticles } from "../../store/Slices/ArticleSlice";
 import { ErrorToast, SuccessToast } from "../../utils/ShowToast";
 import { CreateItemApi } from "../../Https";
 import { fetchItems } from "../../store/Slices/ItemSlice";
+import SearchBox from "../SearhBox/SearchBox";
 
 const CreateItemModal = ({ openModal, setOpenModal }) => {
   const [formData, setFormData] = useState({
@@ -120,6 +121,8 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
   const openPopoverArticle = Boolean(anchorElArticle);
   const idArticle = openPopoverArticle ? "simple-popover" : undefined;
 
+  const [SearchText, setSearchText] = useState("");
+
   return (
     <ModalWrapper open={openModal} setOpen={setOpenModal} title={"Create Item"}>
       <div className="flex justify-center flex-col py-5 gap-y-3">
@@ -144,7 +147,7 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
             sx: {
               borderRadius: "25px", // Add rounded corners
               backgroundColor: "white", // Set background color to white
-              width: "300px", // Set the width as needed
+              // width: "300px", // Set the width as needed
               overflow: "hidden", // Hide overflowing content
             },
           }}
@@ -162,34 +165,51 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
               p: 2,
               borderColor: "#000",
               backgroundColor: "#000",
-              width: "400px",
+              // width: "400px",
               overflow: "hidden",
               borderRadius: "25px",
+              overflowY: "auto",
+              height: "60vh",
             }}
           >
             <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
               <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                <SearchBox
+                  Value={SearchText}
+                  SetValue={setSearchText}
+                  Placeholder={"Search Company"}
+                />
                 {CompanyState.data &&
-                  CompanyState.data.map((dt) => (
-                    <div
-                      key={dt._id}
-                      className="flex gap-x-3 items-center cursor-pointer"
-                      onClick={() => {
-                        handleClose();
-                        handleChange("companyId", dt._id);
-                        // setCompanyId(dt._id);
-                        // setCompany(dt.name);
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                        checked={formData.companyId === dt._id}
-                        readOnly
-                      />
-                      <span>{dt.name}</span>
-                    </div>
-                  ))}
+                  CompanyState.data
+                    .filter((dt) => {
+                      const lowerCaseSearch = SearchText.toLowerCase();
+                      const lowerCaseStation = dt.name.toLowerCase();
+                      if (SearchText !== "") {
+                        return lowerCaseStation.includes(lowerCaseSearch);
+                      } else {
+                        return dt;
+                      }
+                    })
+                    .map((dt) => (
+                      <div
+                        key={dt._id}
+                        className="flex gap-x-3 items-center cursor-pointer"
+                        onClick={() => {
+                          handleClose();
+                          handleChange("companyId", dt._id);
+                          // setCompanyId(dt._id);
+                          // setCompany(dt.name);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                          checked={formData.companyId === dt._id}
+                          readOnly
+                        />
+                        <span>{dt.name}</span>
+                      </div>
+                    ))}
               </div>
             </div>
           </Typography>
@@ -203,7 +223,7 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
             sx: {
               borderRadius: "25px", // Add rounded corners
               backgroundColor: "white", // Set background color to white
-              width: "300px", // Set the width as needed
+              // width: "300px", // Set the width as needed
               overflow: "hidden", // Hide overflowing content
             },
           }}
@@ -221,16 +241,31 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
               p: 2,
               borderColor: "#000",
               backgroundColor: "#000",
-              width: "400px",
+              // width: "400px",
               overflow: "hidden",
               borderRadius: "25px",
+              overflowY: "auto",
+              maxHeight: "60vh",
             }}
           >
             <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
               <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                <SearchBox
+                  Value={SearchText}
+                  SetValue={setSearchText}
+                  Placeholder={"Search Article"}
+                />
                 {ArticleState.data &&
                   ArticleState.data
-                    .filter((dt) => dt.company_id === formData.companyId)
+                    .filter((dt) => {
+                      const lowerCaseSearch = SearchText.toLowerCase();
+                      const lowerCaseStation = dt.name.toLowerCase();
+                      if (SearchText !== "") {
+                        return lowerCaseStation.includes(lowerCaseSearch);
+                      } else {
+                        return dt;
+                      }
+                    })
                     .map((dt) => (
                       <div
                         key={dt._id}
