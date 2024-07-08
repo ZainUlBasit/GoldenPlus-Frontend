@@ -12,6 +12,7 @@ import { UpdateItemApi } from "../../Https"; // Replace CreateItemApi with Updat
 import { fetchItems } from "../../store/Slices/ItemSlice";
 
 const EditItemModal = ({ openModal, setOpenModal, itemData }) => {
+  console.log(itemData);
   const [formData, setFormData] = useState({
     size: itemData.size || "",
     branchId: itemData.branchId || "",
@@ -19,8 +20,8 @@ const EditItemModal = ({ openModal, setOpenModal, itemData }) => {
     branch_name: itemData.branch_name || "",
     article_name: itemData.article_name || "",
     branch: itemData.branch || "",
-    purchase: itemData.purchase || "",
-    sale: itemData.sale || "",
+    purchase: itemData.purchase || 0,
+    sale: itemData.sale || 0,
   });
   const [Loading, setLoading] = useState(false);
 
@@ -53,11 +54,12 @@ const EditItemModal = ({ openModal, setOpenModal, itemData }) => {
   const handleSubmit = async (e) => {
     setLoading(true);
     const { size, articleId, purchase, sale } = formData;
-    if (!size || !articleId || !purchase || !sale) {
+    if (!size || !articleId || purchase === undefined || sale === undefined) {
       ErrorToast("Required fields are undefined!");
     } else {
       try {
         const response = await UpdateItemApi({
+          itemId: itemData._id,
           ...formData,
           branch:
             AuthState.data.role === 2
@@ -195,7 +197,7 @@ const EditItemModal = ({ openModal, setOpenModal, itemData }) => {
         </Popover>
         <CustomInput
           id="size"
-          Type="number"
+          Type="text"
           label="Size"
           placeholder="Enter Item Size"
           Value={formData.size}

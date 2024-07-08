@@ -11,6 +11,7 @@ import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import { fetchArticles } from "../../store/Slices/ArticleSlice";
 import ProcessLoader from "../Loader/ProcessLoader";
 import { fetchCompanyItemLedger } from "../../store/Slices/CompanyItemLegderSlice";
+import SearchBox from "../SearhBox/SearchBox";
 
 const AddStockModal = ({ OpenModal, setOpenModal }) => {
   const [CompanyId, setCompanyId] = useState("");
@@ -148,6 +149,9 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
   const idArticle = openArticle ? "simple-popover-article" : undefined;
   const idItem = openItem ? "simple-popover-item" : undefined;
 
+  const [SearchSize, setSearchSize] = useState("");
+  const [SearchArticle, setSearchArticle] = useState("");
+
   return (
     <ModalWrapper open={OpenModal} setOpen={setOpenModal} title={"Add Stock"}>
       <div className="flex flex-row flex-wrap justify-center gap-x-4 gap-y-4 py-4">
@@ -171,7 +175,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
               sx: {
                 borderRadius: "25px",
                 backgroundColor: "white",
-                width: "300px",
+                // width: "300px",
                 overflow: "hidden",
               },
             }}
@@ -189,16 +193,31 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
                 p: 2,
                 borderColor: "#465462",
                 backgroundColor: "#465462",
-                width: "400px",
+                // width: "400px",
                 overflow: "hidden",
                 borderRadius: "25px",
+                overflowY: "auto",
+                maxHeight: "60vh",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                 <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  <SearchBox
+                    Value={SearchArticle}
+                    SetValue={setSearchArticle}
+                    Placeholder={"Search Article"}
+                  />
                   {ArticleState.data &&
                     ArticleState.data
-                      // .filter((dt) => dt.company_id === CompanyId)
+                      .filter((dt) => {
+                        const lowerCaseSearch = SearchArticle.toLowerCase();
+                        const lowerCaseStation = dt.name.toLowerCase();
+                        if (SearchArticle !== "") {
+                          return lowerCaseStation.includes(lowerCaseSearch);
+                        } else {
+                          return dt;
+                        }
+                      })
                       .map((dt) => (
                         <div
                           key={dt._id}
@@ -242,7 +261,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
               sx: {
                 borderRadius: "25px",
                 backgroundColor: "white",
-                width: "300px",
+                // width: "300px",
                 overflow: "hidden",
               },
             }}
@@ -260,15 +279,30 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
                 p: 2,
                 borderColor: "#465462",
                 backgroundColor: "#465462",
-                width: "400px",
+                // width: "400px",
                 overflow: "hidden",
                 borderRadius: "25px",
+                maxHeight: "60vh",
+                overflowY: "auto",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                 <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  <SearchBox
+                    Value={SearchSize}
+                    SetValue={setSearchSize}
+                    Placeholder={"Search Size"}
+                  />
                   {ItemState.data
-                    .filter((dt) => dt.articleId._id === ArticleId)
+                    .filter((dt) => {
+                      const matchesArticleId = dt.articleId._id === ArticleId;
+                      const matchesSearchSize =
+                        SearchSize === "" ||
+                        dt.size
+                          .toLowerCase()
+                          .includes(SearchSize.toLowerCase());
+                      return matchesArticleId && matchesSearchSize;
+                    })
                     .map((dt) => (
                       <div
                         key={dt._id}

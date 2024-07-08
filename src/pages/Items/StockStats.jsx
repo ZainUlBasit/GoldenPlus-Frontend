@@ -38,7 +38,7 @@ const StockStats = () => {
           setOpenEditModal={setOpenEditModal}
           setOpenDeleteModal={setOpenDeleteModal}
           setSelected={setSelected}
-          SearchPlaceholder={"Search Size..."}
+          SearchPlaceholder={"Search Article..."}
           SearchText={SearchText}
           setSearchText={setSearchText}
           CurrentData={
@@ -46,7 +46,7 @@ const StockStats = () => {
             CompanyItemLegderState.data.filter((dt) =>
               SearchText === ""
                 ? true
-                : Number(SearchText) === Number(dt.size_name)
+                : Number(SearchText) === Number(dt.article_name)
             )
           }
           Columns={StockStatsColumns}
