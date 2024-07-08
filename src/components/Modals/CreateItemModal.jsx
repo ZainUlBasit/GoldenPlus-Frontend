@@ -290,7 +290,7 @@ const CreateItemModal = ({ openModal, setOpenModal }) => {
         </Popover>
         <CustomInput
           id="size"
-          Type="number"
+          Type="text"
           label="Size"
           placeholder="Enter Item Size"
           Value={formData.size}

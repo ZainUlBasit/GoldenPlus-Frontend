@@ -21,7 +21,7 @@ const Info = () => {
   const [SearchText, setSearchText] = useState("");
   const [SearchTextPop, setSearchTextPop] = useState("");
   const [Loading, setLoading] = useState(false);
-  const [SelectedCity, setSelectedCity] = useState("");
+  const [SelectedCity, setSelectedCity] = useState("All");
 
   const CustomerState = useSelector((state) => state.CustomerState);
   const AuthState = useSelector((state) => state.AuthState);
@@ -120,6 +120,24 @@ const Info = () => {
                   SetValue={setSearchTextPop}
                   Placeholder={"Search City"}
                 />
+
+                <div
+                  key={"All"}
+                  className="flex gap-x-3 items-center cursor-pointer"
+                  onClick={() => {
+                    handleClose();
+                    setSelectedCity("All");
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                    checked={SelectedCity === "All"}
+                    readOnly
+                  />
+                  <span>All</span>
+                </div>
+
                 {Cities.filter((dt) => {
                   const lowerCaseSearch = SearchText.toLowerCase();
                   const lowerCaseStation = dt.toLowerCase();
@@ -161,7 +179,9 @@ const Info = () => {
           setSearchText={setSearchText}
           CurrentData={CustomerState.data.filter(
             (dt) =>
-              (SelectedCity === "" || dt.address === SelectedCity) &&
+              (SelectedCity === "" ||
+                SelectedCity === "All" ||
+                dt.address === SelectedCity) &&
               (SearchText === "" ||
                 dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
           )}
