@@ -28,6 +28,7 @@ import SimpleTable from "../../components/Tables/SimpleTable";
 import { BillItemColumns } from "../../utils/ColumnsData/BillItemColumns";
 import { useNavigate } from "react-router-dom";
 import AddingLoader from "../../components/Loaders/AddingLoader";
+import SearchBox from "../../components/SearhBox/SearchBox";
 
 export default function CreateBill() {
   const [CurrentCustomer, setCurrentCustomer] = useState("");
@@ -42,6 +43,7 @@ export default function CreateBill() {
   const [Discount, setDiscount] = useState("");
   const [TotalAmount, setTotalAmount] = useState("");
   const [Payment, setPayment] = useState(0);
+  const [SearchText, setSearchText] = useState("");
   const [CurrentDate, setCurrentDate] = useState(
     moment(new Date()).format("YYYY-MM-DD")
   );
@@ -268,7 +270,7 @@ export default function CreateBill() {
             sx: {
               borderRadius: "25px", // Add rounded corners
               backgroundColor: "white", // Set background color to white
-              width: "300px", // Set the width as needed
+              // width: "300px", // Set the width as needed
               overflow: "hidden", // Hide overflowing content
             },
           }}
@@ -286,28 +288,45 @@ export default function CreateBill() {
               p: 2,
               borderColor: "#000",
               backgroundColor: "#000",
-              width: "400px",
+              // width: "400px",
               overflow: "hidden",
               borderRadius: "25px",
+              overflowY: "auto", // Ensure vertical scroll if needed
+              height: "60vh", // Set height to 60vh
             }}
           >
             <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
               <div className="w-full flex flex-col justify-between gap-y-3 items-start">
-                {CustomerState.data.map((dt) => (
-                  <div
-                    key={dt._id}
-                    className="flex gap-x-3 items-center cursor-pointer"
-                    onClick={() => handleCustomerSelect(dt)}
-                  >
-                    <input
-                      type="checkbox"
-                      className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                      checked={CurrentCustomer === dt._id}
-                      readOnly
-                    />
-                    <span>{dt.name}</span>
-                  </div>
-                ))}
+                <SearchBox
+                  Value={SearchText}
+                  SetValue={setSearchText}
+                  Placeholder={"Search Customer"}
+                />
+                {CustomerState.data
+                  .filter((dt) => {
+                    const lowerCaseSearch = SearchText.toLowerCase();
+                    const lowerCaseStation = dt.name.toLowerCase();
+                    if (SearchText !== "") {
+                      return lowerCaseStation.includes(lowerCaseSearch);
+                    } else {
+                      return dt;
+                    }
+                  })
+                  .map((dt) => (
+                    <div
+                      key={dt._id}
+                      className="flex gap-x-3 items-center cursor-pointer"
+                      onClick={() => handleCustomerSelect(dt)}
+                    >
+                      <input
+                        type="checkbox"
+                        className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                        checked={CurrentCustomer === dt._id}
+                        readOnly
+                      />
+                      <span>{dt.name}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </Typography>

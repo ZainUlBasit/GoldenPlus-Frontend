@@ -7,10 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CustomPagination from "./TablePagination";
-import { PaymentInfoColumns } from "../../utils/ColumnsData/PaymentInfoColumns";
+import {
+  PaymentInfoColumns,
+  PaymentInfoCustomerColumns,
+  PaymentInfoSupplierColumns,
+} from "../../utils/ColumnsData/PaymentInfoColumns";
 // import { PaymentInfoColumns } from "@/assets/Columns/PaymentInfoColumns";
 
-export default function PaymentInfoTable({ Rows }) {
+export default function PaymentInfoTable({ Rows, type }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5); // Adjust the number of rows per page as needed
 
@@ -23,13 +27,18 @@ export default function PaymentInfoTable({ Rows }) {
     setPage(0);
   };
 
+  const CurrentColumns =
+    type === "company"
+      ? PaymentInfoSupplierColumns
+      : PaymentInfoCustomerColumns;
+
   return (
     <div>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead style={{ borderBottomWidth: 2, borderColor: "#465462" }}>
             <TableRow>
-              {PaymentInfoColumns.map((vc, index) => (
+              {CurrentColumns.map((vc, index) => (
                 <TableCell
                   key={index}
                   sx={{

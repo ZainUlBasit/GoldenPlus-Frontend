@@ -83,7 +83,7 @@ const CreateCustomerModal = ({ OpenModal, setOpenModal }) => {
     <ModalWrapper
       open={OpenModal}
       setOpen={setOpenModal}
-      title={"Add Customer"}
+      title={"Add Supplier"}
     >
       <div className="flex flex-col justify-center py-5">
         <div className="flex flex-wrap gap-x-4 gap-y-4">

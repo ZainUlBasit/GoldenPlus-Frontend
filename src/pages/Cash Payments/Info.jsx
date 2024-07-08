@@ -66,7 +66,7 @@ const CashPaymentInfo = () => {
             } py-3 transition-all ease-in-out duration-700 cursor-pointer max767:py-2`}
             onClick={() => setUserType("company")}
           >
-            Company
+            Supplier
           </div>
           <div
             className={`w-[50%] flex justify-center items-center rounded-[40px] ${
@@ -89,13 +89,13 @@ const CashPaymentInfo = () => {
             <Search
               Placeholder={
                 userType === "company"
-                  ? "Search Company..."
+                  ? "Search Supplier..."
                   : userType === "customer" && "Search Customer..."
               }
               Value={SearchText}
               setValue={setSearchText}
             />
-            <PaymentInfoTable Rows={filteredData} />
+            <PaymentInfoTable Rows={filteredData} type={userType} />
           </TableWrapper>
         )}
       </div>

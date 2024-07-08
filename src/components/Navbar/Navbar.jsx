@@ -71,12 +71,17 @@ const Navbar = () => {
               </IconButton>
             </div>
             <div className="flex items-center">
-              <img
+              <div className="font-bold text-2xl font-mono ml-2 border-2 border-white border-x-0 rounded-lg py-2 px-2">
+                {AuthState.data.role === 2
+                  ? AuthState.data.branchId.name
+                  : "Admin Panel"}
+              </div>
+              {/* <img
                 src={Logo}
                 alt="Logo"
                 className="h-12 ml-2 cursor-pointer"
                 onClick={() => navigate("/home")}
-              />
+              /> */}
             </div>
           </div>
           <div className="flex items-center justify-center gap-x-3">

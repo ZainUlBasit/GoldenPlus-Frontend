@@ -104,6 +104,14 @@ export const CustomerColumns = [
     web4: "35px",
   },
   {
+    id: "opening_balance",
+    title: "Opening Balance",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
     id: "discount",
     title: "Discount",
     web1: "20px",

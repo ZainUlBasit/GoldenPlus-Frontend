@@ -37,10 +37,10 @@ import ProcessLoader from "../../components/Loader/ProcessLoader";
 import AddingLoader from "../../components/Loaders/AddingLoader";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "../../components/Modals/DeleteModal";
+import SearchBox from "../../components/SearhBox/SearchBox";
 
 export default function EditInvoice() {
   const [CurrentCustomer, setCurrentCustomer] = useState("");
-  const CustomerState = useSelector((state) => state.CustomerState);
   const [BillNo, setBillNo] = useState("");
   const [BillNoExists, setBillNoExists] = useState(true);
   const [ItemCode, setItemCode] = useState("");
@@ -68,6 +68,7 @@ export default function EditInvoice() {
   const [BillNos, setBillNos] = useState([]);
   const navigate = useNavigate();
 
+  const CustomerState = useSelector((state) => state.CustomerState);
   useEffect(() => {
     dispatch(
       fetchCustomers({
@@ -274,6 +275,7 @@ export default function EditInvoice() {
 
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
   const [Deleting, setDeleting] = useState(false);
+  const [SearchText, setSearchText] = useState("");
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -382,25 +384,42 @@ export default function EditInvoice() {
               width: "400px",
               overflow: "hidden",
               borderRadius: "25px",
+              overflowY: "auto", // Ensure vertical scroll if needed
+              height: "60vh", // Set height to 60vh
             }}
           >
             <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
               <div className="w-full flex flex-col justify-between gap-y-3 items-start">
-                {CustomerState.data.map((dt) => (
-                  <div
-                    key={dt._id}
-                    className="flex gap-x-3 items-center cursor-pointer"
-                    onClick={() => handleCustomerSelect(dt)}
-                  >
-                    <input
-                      type="checkbox"
-                      className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                      checked={CurrentCustomer._id === dt._id}
-                      readOnly
-                    />
-                    <span>{dt.name}</span>
-                  </div>
-                ))}
+                <SearchBox
+                  Value={SearchText}
+                  SetValue={setSearchText}
+                  Placeholder={"Search Customer"}
+                />
+                {CustomerState.data
+                  .filter((dt) => {
+                    const lowerCaseSearch = SearchText.toLowerCase();
+                    const lowerCaseStation = dt.name.toLowerCase();
+                    if (SearchText !== "") {
+                      return lowerCaseStation.includes(lowerCaseSearch);
+                    } else {
+                      return dt;
+                    }
+                  })
+                  .map((dt) => (
+                    <div
+                      key={dt._id}
+                      className="flex gap-x-3 items-center cursor-pointer"
+                      onClick={() => handleCustomerSelect(dt)}
+                    >
+                      <input
+                        type="checkbox"
+                        className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                        checked={CurrentCustomer === dt._id}
+                        readOnly
+                      />
+                      <span>{dt.name}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </Typography>

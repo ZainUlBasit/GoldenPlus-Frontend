@@ -3,7 +3,7 @@ import { BASE_URL, BASE_URL_LOCAL } from "../assets/config";
 
 const token = localStorage.getItem("token");
 export const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
@@ -13,7 +13,7 @@ export const api = axios.create({
 });
 
 export const apiForImage = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -67,6 +67,8 @@ export const GetCustomerBranchApi = (payload) =>
 export const DeleteCustomerApi = (id) => api.delete("/customer/delete/" + id);
 export const UpdateCustomerApi = (payload) =>
   api.patch("/customer/update", payload);
+export const UpdateCustomerOpeningBalanceApi = (payload) =>
+  api.patch("/customer/update-opening-balance", payload);
 
 export const GetCustomerApi = () => api.get("/customer");
 export const GetBillNoApi = (id) => api.get("/customer/get-bill-nos/" + id);

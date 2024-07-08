@@ -4,6 +4,7 @@ import { TbArrowsExchange2 } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { BsChevronDown } from "react-icons/bs";
 import { Popover, Typography } from "@mui/material";
+import SearchBox from "../SearhBox/SearchBox";
 
 const ItemLedgerCard = ({
   setOpenCashLedger,
@@ -64,6 +65,8 @@ const ItemLedgerCard = ({
     };
   }, []);
 
+  const [SearchText, setSearchText] = useState("");
+
   return (
     <div className="w-fit mx-auto bg-[aliceblue] rounded-xl shadow-[rgba(0,0,0,0.16)_0px_1px_4px,#000_0px_0px_0px_3px] overflow-hidden">
       <div className="px-4 py-5 flex justify-center items-center flex-col">
@@ -120,11 +123,26 @@ const ItemLedgerCard = ({
                   width: "100%",
                   overflow: "hidden",
                   borderRadius: "25px",
+                  overflowY: "auto",
+                  height: "60vh",
                 }}
               >
                 <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                   <div className="w-full flex flex-col justify-between gap-y-3 items-start">
-                    {Users.map((dt) => (
+                    <SearchBox
+                      Value={SearchText}
+                      SetValue={setSearchText}
+                      Placeholder={"Search Customer"}
+                    />
+                    {Users.filter((dt) => {
+                      const lowerCaseSearch = SearchText.toLowerCase();
+                      const lowerCaseStation = dt.name.toLowerCase();
+                      if (SearchText !== "") {
+                        return lowerCaseStation.includes(lowerCaseSearch);
+                      } else {
+                        return dt;
+                      }
+                    }).map((dt) => (
                       <div
                         key={dt._id}
                         className="flex gap-x-3 items-center cursor-pointer"
