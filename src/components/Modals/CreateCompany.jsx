@@ -90,7 +90,7 @@ const CreateCompany = ({ Open, setOpen }) => {
   const id = open ? "simple-popover" : undefined;
 
   return (
-    <ModalWrapper open={Open} setOpen={setOpen} title={"Create Company"}>
+    <ModalWrapper open={Open} setOpen={setOpen} title={"Create Supplier"}>
       <div className="flex justify-center flex-col py-5 gap-y-4">
         <CustomInput
           id="name"
