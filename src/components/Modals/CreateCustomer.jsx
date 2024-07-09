@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import ModalWrapper from "./ModalWrapper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProcessLoader from "../Loader/ProcessLoader";
 import CustomInput from "../Inputs/CustomInput";
 import CustomPopOver from "../Inputs/CustomPopOver";
@@ -25,6 +25,7 @@ const CreateCustomerModal = ({ OpenModal, setOpenModal }) => {
 
   const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const AuthState = useSelector((state) => state.AuthState);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -57,7 +58,14 @@ const CreateCustomerModal = ({ OpenModal, setOpenModal }) => {
       const response = await CreateCustomerApi(formData);
       if (response.data.success) {
         SuccessToast(response.data.message);
-        dispatch(fetchCustomers({ branch: 1 })); // Ensure you have a function to fetch customer data
+        dispatch(
+          fetchCustomers({
+            branch:
+              AuthState.data.role === 2
+                ? AuthState.data.branchId.branch_number
+                : -1,
+          })
+        ); // Ensure you have a function to fetch customer data
         setOpenModal(false);
       }
     } catch (err) {
