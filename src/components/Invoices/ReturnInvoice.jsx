@@ -77,7 +77,11 @@ const ReturnInvoice = () => {
       ) : (
         <div ref={contentToPrint} className="flex flex-col w-auto p-1">
           <img
-            src={`/${1}.png`}
+            src={`/${
+              AuthState.data.role === 2
+                ? AuthState.data.branchId.branch_number
+                : -1
+            }.png`}
             alt="banner"
             className="w-[100%] h-auto border-2 border-[#002650] rounded-t-lg"
           />

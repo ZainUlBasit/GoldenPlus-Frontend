@@ -87,7 +87,7 @@ export default function PrintSimpleTable({ rows, columns, title, bgColor }) {
                   key={index}
                   style={{ cursor: "pointer" }}
                 >
-                  {columns.map(({ id }, key) => {
+                  {columns.map(({ format, id }, key) => {
                     let value = row[id];
                     if (id === "qty" || id === "price" || id === "amount") {
                       value = Number(value).toLocaleString();
@@ -106,7 +106,9 @@ export default function PrintSimpleTable({ rows, columns, title, bgColor }) {
                               : "left",
                         }}
                       >
-                        {id === "date"
+                        {format && typeof value === "number"
+                          ? format(value)
+                          : id === "date"
                           ? moment(new Date(value * 1000)).format("DD/MM/YY")
                           : value || "N/A"}
                       </TableCell>

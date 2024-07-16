@@ -14,8 +14,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { fetchCustomers } from "../../store/Slices/CustomerSlice";
 import { ReportItemColumns } from "../../utils/ColumnsData/ReportItemColumns";
 import { fetchCustomerItemLedger } from "../../store/Slices/CustomerItemLegderSlice";
+import { CustomerReportColumns } from "../../utils/ColumnsData/CustomerReportColumns";
 
-const ItemLedgerReport = () => {
+const CustomerReport = () => {
   const location = useLocation();
   const state = location.state;
   console.log(state);
@@ -26,17 +27,8 @@ const ItemLedgerReport = () => {
   const dispatch = useDispatch();
 
   const CustomerState = useSelector((state) => state.CustomerState);
-  const CustomerItemLegderState = useSelector(
-    (state) => state.CustomerItemLegderState
-  );
+
   useEffect(() => {
-    dispatch(
-      fetchCustomerItemLedger({
-        customerId: state.id,
-        from: state.from,
-        to: state.to,
-      })
-    );
     dispatch(
       fetchCustomers({
         branch:
@@ -97,76 +89,19 @@ const ItemLedgerReport = () => {
           <div className="flex w-full bg-[#002650] text-white justify-center items-center py-3 font-bold text-2xl px-3 mt-1">
             Customer Details
           </div>
-          <div
-            className="flex w-full gap-x-7 px-3 pt-3"
-            style={{ borderColor: "#002650", borderWidth: "2px 2px 0px 2px" }}
-          >
-            <div className="flex flex-col gap-y-3 w-[50%]">
-              <div className="flex items-center gap-x-2">
-                <div className="font-semibold text-lg underline">Name:</div>
-                <div className="font-semibold text-lg">
-                  {CustomerState.data &&
-                    CustomerState.data.find((dt) => dt._id === state.id).name}
-                </div>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="font-semibold text-lg underline">
-                  Contact #:
-                </div>
-                <div className="font-semibold text-lg">
-                  {CustomerState.data &&
-                    CustomerState.data.find((dt) => dt._id === state.id)
-                      .contact}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-y-3 w-[50%]">
-              <div className="flex items-center gap-x-2">
-                <div className="font-semibold text-lg underline">
-                  From Date #:
-                </div>
-                <div className="font-semibold text-lg">
-                  {moment(new Date(state.from)).format("DD/MM/YYYY")}
-                </div>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="font-semibold text-lg underline">To Date:</div>
-                <div className="font-semibold text-lg">
-                  {moment(new Date(state.to)).format("DD/MM/YYYY")}
-                </div>
-              </div>
-              {/* <div className="flex items-start justify-center gap-x-2">
-              <div className="font-bold text-xl underline">Address:</div>
-              <div className="font-bold text-xl">
-                {CurrentInvoiceData.Invoice_Info.customerId.address}
-              </div>
-            </div> */}
-            </div>
-          </div>
-          <div
-            className="flex items-start justify-start gap-x-2 pt-3 px-3 pb-3"
-            style={{
-              borderColor: "#002650",
-              borderWidth: "0px 2px 2px 2px",
-              borderRadius: "0px 0px 10px 10px",
-            }}
-          >
-            <div className="font-semibold text-lg underline">Address:</div>
-            <div className="font-semibold text-lg">
-              {CustomerState.data &&
-                CustomerState.data.find((dt) => dt._id === state.id).address}
-            </div>
-          </div>
-          {CustomerItemLegderState.data && (
+
+          {CustomerState.data && (
             <div className="flex w-full">
               <PrintSimpleTable
-                rows={CustomerItemLegderState.data}
-                columns={ReportItemColumns}
+                rows={CustomerState.data.filter((dt) => {
+                  return state.city === "All" || dt.address === state.city;
+                })}
+                columns={CustomerReportColumns}
                 bgColor={"#002650"}
               />
             </div>
           )}
-          <div className="flex flex-col w-full justify-end items-end px-3 py-3 gap-y-3">
+          {/* <div className="flex flex-col w-full justify-end items-end px-3 py-3 gap-y-3">
             <div className="font-bold">
               Total:{" "}
               {Number(
@@ -208,11 +143,11 @@ const ItemLedgerReport = () => {
               ).toLocaleString()}
               /-
             </div>
-          </div>
+          </div> */}
         </div>
       )}
     </div>
   );
 };
 
-export default ItemLedgerReport;
+export default CustomerReport;

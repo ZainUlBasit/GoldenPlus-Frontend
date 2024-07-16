@@ -70,6 +70,7 @@ export const CompanyColumns = [
     web2: "25px",
     web3: "30px",
     web4: "35px",
+    format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "paid",
@@ -78,6 +79,7 @@ export const CompanyColumns = [
     web2: "25px",
     web3: "30px",
     web4: "35px",
+    format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "remaining",
@@ -86,5 +88,6 @@ export const CompanyColumns = [
     web2: "25px",
     web3: "30px",
     web4: "35px",
+    format: (value) => value.toLocaleString("en-US"),
   },
 ];

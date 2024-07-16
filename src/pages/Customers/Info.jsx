@@ -13,6 +13,7 @@ import { SuccessToast } from "../../utils/ShowToast";
 import CustomPopOver from "../../components/Inputs/CustomPopOver";
 import SearchBox from "../../components/SearhBox/SearchBox";
 import { Popover, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Info = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
@@ -22,6 +23,7 @@ const Info = () => {
   const [SearchTextPop, setSearchTextPop] = useState("");
   const [Loading, setLoading] = useState(false);
   const [SelectedCity, setSelectedCity] = useState("All");
+  const navigate = useNavigate();
 
   const CustomerState = useSelector((state) => state.CustomerState);
   const AuthState = useSelector((state) => state.AuthState);
@@ -220,6 +222,22 @@ const Info = () => {
             Loading={Loading}
           />
         )}
+      </div>
+      <div className="flex justify-center items-center my-8">
+        <div className="flex gap-x-2 my-5">
+          <div
+            className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
+            onClick={() => {
+              navigate("/customer-report", {
+                state: {
+                  city: SelectedCity, // Your state data here
+                },
+              });
+            }}
+          >
+            Print Item Ledger
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -127,11 +127,10 @@ export default function CreateBill() {
       setItemName("");
       setItemId("");
     } else {
+      console.log(ItemArticle);
       const currentItem = ItemState.data.find((dt) => {
-        return (
-          Number(dt.size) === Number(ItemSize) &&
-          dt.articleId.name === ItemArticle
-        );
+        console.log(dt.articleId.name);
+        return dt.size === ItemSize && dt.articleId.name === ItemArticle;
       });
       console.log(currentItem);
       if (currentItem) {
@@ -162,9 +161,7 @@ export default function CreateBill() {
           qty: Number(ItemQty),
           purchase: Number(
             ItemState.data.find(
-              (dt) =>
-                Number(dt.size) === Number(ItemSize) &&
-                dt.articleId.name === ItemArticle
+              (dt) => dt.size === ItemSize && dt.articleId.name === ItemArticle
             ).purchase
           ),
           price: Number(ItemPrice),

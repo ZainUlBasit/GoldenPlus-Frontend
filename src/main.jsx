@@ -29,6 +29,7 @@ import NewBillInvoice from "./components/Invoices/NewBillInvoice";
 import ReturnInvoice from "./components/Invoices/ReturnInvoice";
 import ItemLedgerReport from "./components/Invoices/ItemLedgerReport";
 import Summary from "./pages/Cash Payments/Summary";
+import CustomerReport from "./components/Invoices/CustomerReport";
 
 const router = createBrowserRouter([
   {
@@ -156,6 +157,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ItemLedgerReport />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/customer-report",
+    element: (
+      <ProtectedRoute>
+        <CustomerReport />
       </ProtectedRoute>
     ),
   },
