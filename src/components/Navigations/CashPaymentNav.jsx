@@ -6,11 +6,23 @@ import { useNavigate } from "react-router-dom";
 import CreateCompany from "../Modals/CreateCompany";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import PaymentModal from "../Modals/PaymentModal";
+import { BiInfoCircle } from "react-icons/bi";
 
 const CashPaymentNav = () => {
   const [OpenAddModal, setOpenAddModal] = useState(false);
+  const navigate = useNavigate();
   return (
     <NavigationsWrapper>
+      <NavBtn
+        title={"Payment Info"}
+        Icon={BiInfoCircle}
+        Type={"link"}
+        link={"/cash-payments"}
+        Width={"w-[230px]"}
+        onClick={() => {
+          navigate("/cash-payments");
+        }}
+      />
       <NavBtn
         title={"New Payment"}
         Icon={RiSecurePaymentFill}
@@ -19,6 +31,16 @@ const CashPaymentNav = () => {
         Width={"w-[230px]"}
         onClick={() => {
           setOpenAddModal(true);
+        }}
+      />
+      <NavBtn
+        title={"Cash Summary"}
+        Icon={RiSecurePaymentFill}
+        Type={"modal"}
+        link={"/"}
+        Width={"w-[230px]"}
+        onClick={() => {
+          navigate("/cash-summary");
         }}
       />
       {OpenAddModal && (

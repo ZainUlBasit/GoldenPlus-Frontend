@@ -375,7 +375,7 @@ export default function CreateBill() {
                 ))}
             </datalist>
             <input
-              type="number"
+              type="text"
               list="Article-Size"
               id="fruit"
               name="fruit"

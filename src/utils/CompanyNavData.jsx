@@ -1,3 +1,4 @@
+import { BiSolidReport } from "react-icons/bi";
 import {
   FaInfo,
   FaBook,
@@ -43,6 +44,12 @@ const CompanyNavData = [
     type: "link",
     link: "/supplier/stock-stat",
     icon: FaChartLine,
+  },
+  {
+    title: "Add Opening Balance",
+    type: "modal",
+    link: "/",
+    icon: BiSolidReport,
   },
 ];
 

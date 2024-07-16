@@ -3,7 +3,7 @@ import { BASE_URL, BASE_URL_LOCAL } from "../assets/config";
 
 const token = localStorage.getItem("token");
 export const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
@@ -13,7 +13,7 @@ export const api = axios.create({
 });
 
 export const apiForImage = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -39,6 +39,9 @@ export const GetRM_StatsApi = (payload) =>
   api.post("/raw-material/branch", payload);
 export const AddRM_StatsApi = (payload) =>
   api.post("/raw-material/add", payload);
+
+export const UpdateCompanyOpeningBalanceApi = (payload) =>
+  api.patch("/company/update-opening-balance", payload);
 
 // ======================================
 //  items requests
@@ -129,3 +132,10 @@ export const CreateExpensesApi = (payload) =>
   api.post("/report/create", payload);
 export const UpdateExpensesApi = (payload) =>
   api.patch("/report/update", payload);
+
+// Accounts
+export const CreateAccountApi = (payload) =>
+  api.post("/accounts/create", payload);
+export const GetAccountsApi = (payload) => api.post("/accounts/get", payload);
+export const UpdateAccountsAmountApi = (payload) =>
+  api.patch("/accounts/add-amount", payload);

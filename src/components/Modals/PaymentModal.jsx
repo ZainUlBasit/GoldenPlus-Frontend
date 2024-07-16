@@ -11,6 +11,7 @@ import { BankNameData } from "../../utils/BankNameData";
 import { fetchCustomers } from "../../store/Slices/CustomerSlice";
 import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import ProcessLoader from "../Loader/ProcessLoader";
+import SearchBox from "../SearhBox/SearchBox";
 
 const PaymentModal = ({ OpenModal, setOpenModal }) => {
   const [userType, setUserType] = useState("");
@@ -162,6 +163,8 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
     { value: 3, label: "Check" },
   ];
 
+  const [SearchTextPop, setSearchTextPop] = useState("");
+
   return (
     <ModalWrapper open={OpenModal} setOpen={setOpenModal} title={"Add Payment"}>
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-4 py-4">
@@ -256,7 +259,7 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
                 sx: {
                   borderRadius: "25px", // Add rounded corners
                   backgroundColor: "white", // Set background color to white
-                  width: "300px", // Set the width as needed
+                  width: "auto", // Set the width as needed
                   overflow: "hidden", // Hide overflowing content
                 },
               }}
@@ -274,53 +277,84 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
                   p: 2,
                   borderColor: "#000",
                   backgroundColor: "#000",
-                  width: "400px",
+                  width: "auto",
                   overflow: "hidden",
                   borderRadius: "25px",
+                  maxHeight: "60vh",
+                  overflowY: "auto",
                 }}
               >
                 <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                   <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                    <SearchBox
+                      Value={SearchTextPop}
+                      SetValue={setSearchTextPop}
+                      Placeholder={
+                        userType === 1
+                          ? "Search Company"
+                          : userType === 2 && "Search Customer"
+                      }
+                    />
                     {userType === 1 &&
-                      CompanyState.data.map((dt) => (
-                        <div
-                          key={dt._id}
-                          className="flex gap-x-3 items-center cursor-pointer"
-                          onClick={() => {
-                            handleClose();
-                            setUserId(dt._id);
-                            setUserName(dt.name);
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                            checked={userId === dt._id}
-                            readOnly
-                          />
-                          <span>{dt.name}</span>
-                        </div>
-                      ))}
+                      CompanyState.data
+                        .filter((dt) => {
+                          const lowerCaseSearch = SearchTextPop.toLowerCase();
+                          const lowerCaseStation = dt.name.toLowerCase();
+                          if (SearchTextPop !== "") {
+                            return lowerCaseStation.includes(lowerCaseSearch);
+                          } else {
+                            return dt;
+                          }
+                        })
+                        .map((dt) => (
+                          <div
+                            key={dt._id}
+                            className="flex gap-x-3 items-center cursor-pointer"
+                            onClick={() => {
+                              handleClose();
+                              setUserId(dt._id);
+                              setUserName(dt.name);
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                              checked={userId === dt._id}
+                              readOnly
+                            />
+                            <span>{dt.name}</span>
+                          </div>
+                        ))}
                     {userType === 2 &&
-                      CustomerState.data.map((dt) => (
-                        <div
-                          key={dt._id}
-                          className="flex gap-x-3 items-center cursor-pointer"
-                          onClick={() => {
-                            setUserId(dt._id);
-                            setUserName(dt.name);
-                            handleClose();
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                            checked={userId === dt._id}
-                            readOnly
-                          />
-                          <span>{dt.name}</span>
-                        </div>
-                      ))}
+                      CustomerState.data
+                        .filter((dt) => {
+                          const lowerCaseSearch = SearchTextPop.toLowerCase();
+                          const lowerCaseStation = dt.name.toLowerCase();
+                          if (SearchTextPop !== "") {
+                            return lowerCaseStation.includes(lowerCaseSearch);
+                          } else {
+                            return dt;
+                          }
+                        })
+                        .map((dt) => (
+                          <div
+                            key={dt._id}
+                            className="flex gap-x-3 items-center cursor-pointer"
+                            onClick={() => {
+                              setUserId(dt._id);
+                              setUserName(dt.name);
+                              handleClose();
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                              checked={userId === dt._id}
+                              readOnly
+                            />
+                            <span>{dt.name}</span>
+                          </div>
+                        ))}
                   </div>
                 </div>
               </Typography>

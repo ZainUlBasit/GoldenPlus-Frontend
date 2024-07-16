@@ -70,6 +70,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
           desc: Desc,
           ...branchInfo,
           date: CurrentDate,
+          old: oldBalance,
         });
         if (response.data.success) {
           SuccessToast(response.data.data.msg);
@@ -145,6 +146,12 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
   const idCompany = openCompany ? "simple-popover-company" : undefined;
   const idArticle = openArticle ? "simple-popover-article" : undefined;
   const idItem = openItem ? "simple-popover-item" : undefined;
+
+  const [oldBalance, setOldBalance] = useState(false);
+
+  const handleChange = (e) => {
+    setOldBalance(e.target.value === "true");
+  };
 
   return (
     <ModalWrapper
@@ -229,35 +236,35 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
             setValue={setRm_name}
             required
           />
-          <div className="flex flex-col gap-y-4">
-            <CustomInput
-              id="purchase"
-              Type="number"
-              label="Purchase"
-              placeholder="Enter Purchase"
-              Value={Purchase}
-              setValue={setPurchase}
-              required
-            />
-            <CustomInput
-              id="new-stock"
-              Type="number"
-              label="Quantity"
-              placeholder="Enter Quantity"
-              Value={NewStock}
-              setValue={setNewStock}
-              required
-            />
-            <CustomInput
-              id="desc"
-              Type="text"
-              label="Description"
-              placeholder="Enter Description"
-              Value={Desc}
-              setValue={setDesc}
-              required
-            />
-          </div>
+          <CustomInput
+            id="purchase"
+            Type="number"
+            label="Purchase"
+            placeholder="Enter Purchase"
+            Value={Purchase}
+            setValue={setPurchase}
+            required
+          />
+          <CustomInput
+            id="new-stock"
+            Type="number"
+            label="Quantity"
+            placeholder="Enter Quantity"
+            Value={NewStock}
+            setValue={setNewStock}
+            required
+          />
+          <CustomInput
+            id="desc"
+            Type="text"
+            label="Description"
+            placeholder="Enter Description"
+            Value={Desc}
+            setValue={setDesc}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-y-4">
           <CustomInput
             id="invoice-no"
             Type="text"
@@ -269,10 +276,10 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
           />
 
           <CustomInput
-            id="truck-no"
+            id="Old Balance"
             Type="text"
-            label="Truck No"
-            placeholder="Enter Truck No"
+            label="Old Balance"
+            placeholder="Old Balance ?"
             Value={TruckNo}
             setValue={setTruckNo}
             required
@@ -287,6 +294,31 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
             setValue={setDate}
             required
           />
+
+          <div className="flex flex-col justify-start items-start">
+            <div className="flex items-center gap-x-2">
+              <input
+                type="radio"
+                id="no"
+                name="old_balance"
+                value={false}
+                checked={oldBalance === false}
+                onChange={handleChange}
+              />
+              <label for="no">New Material</label>
+            </div>
+            <div className="flex items-center gap-x-2">
+              <input
+                type="radio"
+                id="yes"
+                name="old_balance"
+                value={true}
+                checked={oldBalance === true}
+                onChange={handleChange}
+              />
+              <label for="yes">Old Material</label>
+            </div>
+          </div>
         </div>
       </div>
       <div className="w-[100%] flex justify-center my-5 mt-1">

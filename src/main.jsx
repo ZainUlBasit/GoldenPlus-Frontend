@@ -28,6 +28,7 @@ import EditInvoice from "./pages/Customers/EditInvoice";
 import NewBillInvoice from "./components/Invoices/NewBillInvoice";
 import ReturnInvoice from "./components/Invoices/ReturnInvoice";
 import ItemLedgerReport from "./components/Invoices/ItemLedgerReport";
+import Summary from "./pages/Cash Payments/Summary";
 
 const router = createBrowserRouter([
   {
@@ -187,6 +188,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CashPaymentInfo />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/cash-summary",
+    element: (
+      <ProtectedRoute>
+        <Summary />
       </ProtectedRoute>
     ),
   },

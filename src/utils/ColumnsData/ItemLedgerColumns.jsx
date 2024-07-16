@@ -57,6 +57,32 @@ export const CustomerItemLedgerColumns = [
     web4: "35px",
   },
 ];
+export const CashSummaryColumns = [
+  {
+    id: "account_name",
+    title: "Type Name",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "account_no",
+    title: "Account #",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
+    id: "amount",
+    title: "Amount",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+];
 
 export const EditInvoiceColumns = [
   {
