@@ -10,6 +10,7 @@ import ProcessLoader from "../../components/Loader/ProcessLoader";
 import { fetchCompanyItemLedger } from "../../store/Slices/CompanyItemLegderSlice";
 import { CashLedgerColumns } from "../../utils/ColumnsData/CashLedgerColumns";
 import { fetchPaymentById } from "../../store/Slices/PaymentSlice";
+import exportToExcel from "../../utils/ExportToExcel";
 
 export default function ComapnyLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
@@ -64,6 +65,18 @@ export default function ComapnyLedger() {
     <div className="flex flex-col items-center justify-center">
       <Navbar />
       <CompanyNav />
+      <div className="w-full flex justify-end px-2 py-3">
+        {(CompanyItemLegderState.data || PaymentState.data) && (
+          <div
+            className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+            onClick={() => {
+              exportToExcel(CompanyItemLegderState.data, "MyExcelFile");
+            }}
+          >
+            Convert to Excel
+          </div>
+        )}
+      </div>
       <ItemLedgerCard
         setOpenCashLedger={setOpenCashLedger}
         setOpenItemLedger={setOpenItemLedger}

@@ -14,6 +14,7 @@ import CustomPopOver from "../../components/Inputs/CustomPopOver";
 import SearchBox from "../../components/SearhBox/SearchBox";
 import { Popover, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import exportToExcel from "../../utils/ExportToExcel";
 
 const Info = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
@@ -71,7 +72,7 @@ const Info = () => {
     <div className="relative">
       <Navbar />
       <CustomerNav />
-      <div className="w-full my-2 flex justify-center items-center mb-5">
+      <div className="w-full my-2 flex gap-x-2 flex-wrap justify-center items-center mb-5">
         <CustomPopOver
           label={"Select City"}
           placeholder={"Select City"}
@@ -79,6 +80,28 @@ const Info = () => {
           Value={SelectedCity || "Select City"}
           onClick={handleClick}
         />
+        {CustomerState.data.length !== 0 && (
+          <div
+            className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+            onClick={() => {
+              exportToExcel(
+                CustomerState.data.filter(
+                  (dt) =>
+                    (SelectedCity === "" ||
+                      SelectedCity === "All" ||
+                      dt.address === SelectedCity) &&
+                    (SearchText === "" ||
+                      dt.name
+                        .toLowerCase()
+                        .startsWith(SearchText.toLowerCase()))
+                ),
+                "MyExcelFile"
+              );
+            }}
+          >
+            Convert to Excel
+          </div>
+        )}
 
         <Popover
           id={id}

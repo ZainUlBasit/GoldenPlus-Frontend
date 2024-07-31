@@ -12,6 +12,7 @@ import CustomerNav from "../../components/Navigations/CustomerNav";
 import Navbar from "../../components/Navbar/Navbar";
 import { fetchReturnLedger } from "../../store/Slices/ReturnSlice";
 import { useNavigate } from "react-router-dom";
+import exportToExcel from "../../utils/ExportToExcel";
 
 export default function CustomerLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
@@ -82,6 +83,7 @@ export default function CustomerLedger() {
     <div className="flex flex-col items-center justify-center">
       <Navbar />
       <CustomerNav />
+
       <ItemLedgerCard
         setOpenCashLedger={setOpenCashLedger}
         setOpenItemLedger={setOpenItemLedger}
@@ -95,6 +97,28 @@ export default function CustomerLedger() {
         setSelectUser={setCurrentCustomer}
         Placeholder={"Select Customer"}
       />
+      <div className="w-full flex justify-end px-2 py-3">
+        {PaymentState.data.length !== 0 && (
+          <div
+            className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+            onClick={() => {
+              exportToExcel(CustomerItemLegderState.data, "MyExcelFile");
+            }}
+          >
+            Convert to Excel
+          </div>
+        )}
+        {PaymentState.data.length !== 0 && (
+          <div
+            className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+            onClick={() => {
+              exportToExcel(PaymentState.data, "MyExcelFile");
+            }}
+          >
+            Convert to Excel
+          </div>
+        )}
+      </div>
       {OpenItemLedger &&
         (CustomerItemLegderState.loading ? (
           <ProcessLoader />

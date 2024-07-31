@@ -35,6 +35,23 @@ const Info = () => {
     <div className="relative">
       <Navbar />
       <CompanyNav />
+      <div className="w-full flex justify-end px-2 py-3">
+        <div
+          className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+          onClick={() => {
+            exportToExcel(
+              CompanyState.data.filter((dt) =>
+                SearchText === ""
+                  ? true
+                  : dt.name.toLowerCase().startsWith(SearchText.toLowerCase())
+              ),
+              "MyExcelFile"
+            );
+          }}
+        >
+          Convert to Excel
+        </div>
+      </div>
       <div className="w-full mt-2 flex justify-center items-center">
         <SearchableTable
           setOpenEditModal={setOpenEditModal}
