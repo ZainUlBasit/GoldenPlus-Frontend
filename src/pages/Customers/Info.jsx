@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import CustomerNav from "../../components/Navigations/CustomerNav";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,6 +68,79 @@ const Info = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const totalAmount = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.total, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
+  const returnAmount = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.return_amount, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
+  const openingBalance = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.opening_balance, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
+  const discountAmount = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.discount, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
+  const recievedAmount = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.paid, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
+  const recievealeAmount = useMemo(() => {
+    return CustomerState.data
+      .filter(
+        (dt) =>
+          (SelectedCity === "" ||
+            SelectedCity === "All" ||
+            dt.address === SelectedCity) &&
+          (SearchText === "" ||
+            dt.name.toLowerCase().startsWith(SearchText.toLowerCase()))
+      )
+      .reduce((acc, cust) => acc + cust.remaining, 0);
+  }, [CustomerState.data, SearchText, SelectedCity]);
   return (
     <div className="relative">
       <Navbar />
@@ -246,7 +319,7 @@ const Info = () => {
           />
         )}
       </div>
-      <div className="flex justify-center items-center my-8">
+      <div className="flex justify-center items-center mt-1">
         <div className="flex gap-x-2 my-5">
           <div
             className="px-2 py-2 border-2 border-black hover:rounded-lg transition-all ease-in-out duration-500 hover:bg-gray-600 bg-black text-white hover:text-white cursor-pointer w-[200px] flex justify-center items-center font-bold"
@@ -260,6 +333,32 @@ const Info = () => {
           >
             Print Item Ledger
           </div>
+        </div>
+      </div>
+      <div className="flex justify-center items-center w-full flex-col">
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Total Amount:</div>
+          <div className="">{Number(totalAmount).toLocaleString()} /-</div>
+        </div>
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Return Amount:</div>
+          <div className="">{Number(returnAmount).toLocaleString()} /-</div>
+        </div>
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Opening Balance:</div>
+          <div className="">{Number(openingBalance).toLocaleString()} /-</div>
+        </div>
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Discount:</div>
+          <div className="">{Number(discountAmount).toLocaleString()} /-</div>
+        </div>
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Recieved:</div>
+          <div className="">{Number(recievedAmount).toLocaleString()} /-</div>
+        </div>
+        <div className="flex gap-x-1 font-bold text-xl">
+          <div className="">Recievable:</div>
+          <div className="">{Number(recievealeAmount).toLocaleString()} /-</div>
         </div>
       </div>
     </div>

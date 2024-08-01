@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { GetInvoiceDataApi } from "../../Https";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -46,6 +46,49 @@ const CustomerReport = () => {
     onAfterPrint: () => console.log("after printing..."),
     removeAfterPrint: true,
   });
+
+  const totalAmount = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.total, 0);
+  }, [CustomerState.data, state.city]);
+  const returnAmount = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.return_amount, 0);
+  }, [CustomerState.data, state.city]);
+  const openingBalance = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.opening_balance, 0);
+  }, [CustomerState.data, state.city]);
+  const discountAmount = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.discount, 0);
+  }, [CustomerState.data, state.city]);
+  const recievedAmount = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.paid, 0);
+  }, [CustomerState.data, state.city]);
+  const recievealeAmount = useMemo(() => {
+    return CustomerState.data
+      .filter((dt) => {
+        return state.city === "All" || dt.address === state.city;
+      })
+      .reduce((acc, cust) => acc + cust.remaining, 0);
+  }, [CustomerState.data, state.city]);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -101,6 +144,40 @@ const CustomerReport = () => {
               />
             </div>
           )}
+          <div className="flex justify-center items-center w-full flex-col my-2 gap-y-2">
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Total Amount:</div>
+              <div className="">{Number(totalAmount).toLocaleString()} /-</div>
+            </div>
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Return Amount:</div>
+              <div className="">{Number(returnAmount).toLocaleString()} /-</div>
+            </div>
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Opening Balance:</div>
+              <div className="">
+                {Number(openingBalance).toLocaleString()} /-
+              </div>
+            </div>
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Discount:</div>
+              <div className="">
+                {Number(discountAmount).toLocaleString()} /-
+              </div>
+            </div>
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Recieved:</div>
+              <div className="">
+                {Number(recievedAmount).toLocaleString()} /-
+              </div>
+            </div>
+            <div className="flex gap-x-1 font-bold text-xl">
+              <div className="">Recievable:</div>
+              <div className="">
+                {Number(recievealeAmount).toLocaleString()} /-
+              </div>
+            </div>
+          </div>
           {/* <div className="flex flex-col w-full justify-end items-end px-3 py-3 gap-y-3">
             <div className="font-bold">
               Total:{" "}

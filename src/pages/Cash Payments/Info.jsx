@@ -52,6 +52,7 @@ const CashPaymentInfo = () => {
   useEffect(() => {
     setSearchText("");
   }, [userType]);
+
   return (
     <div className="relative">
       <Navbar />

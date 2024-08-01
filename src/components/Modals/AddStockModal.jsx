@@ -56,6 +56,8 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
               ? AuthState.data.branchId.branch_number
               : -1,
           date: CurrentDate,
+          supplierId: Supplier,
+          type: AccountType === "Self" ? 1 : AccountType === "Supplier" && 2,
         });
         if (response.data.success) {
           SuccessToast(response.data.data.msg);
@@ -172,6 +174,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
   const [SearchArticle, setSearchArticle] = useState("");
   const [AccountType, setAccountType] = useState("");
   const [Supplier, setSupplier] = useState("");
+  const [SearchTextPop, setSearchTextPop] = useState("");
 
   return (
     <ModalWrapper open={OpenModal} setOpen={setOpenModal} title={"Add Stock"}>
@@ -206,6 +209,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
             }
             onClick={handleClickArticle}
           />
+          {/* Supplier Popver */}
           <Popover
             id={idSupplier}
             open={openSupplier}
@@ -237,22 +241,27 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
                 overflow: "hidden",
                 borderRadius: "25px",
                 overflowY: "auto",
-                maxHeight: "60vh",
+                maxHeight: "30vh",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                 <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  <SearchBox
+                    Value={SearchTextPop}
+                    SetValue={setSearchTextPop}
+                    Placeholder={"Search Supplier"}
+                  />
                   {CompanyState.data &&
                     CompanyState.data
-                      // .filter((dt) => {
-                      //   const lowerCaseSearch = SearchArticle.toLowerCase();
-                      //   const lowerCaseStation = dt.name.toLowerCase();
-                      //   if (SearchArticle !== "") {
-                      //     return lowerCaseStation.includes(lowerCaseSearch);
-                      //   } else {
-                      //     return dt;
-                      //   }
-                      // })
+                      .filter((dt) => {
+                        const lowerCaseSearch = SearchTextPop.toLowerCase();
+                        const lowerCaseStation = dt.name.toLowerCase();
+                        if (SearchTextPop !== "") {
+                          return lowerCaseStation.includes(lowerCaseSearch);
+                        } else {
+                          return dt;
+                        }
+                      })
                       .map((dt) => (
                         <div
                           key={dt._id}
@@ -275,6 +284,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
               </div>
             </Typography>
           </Popover>
+          {/* Type popover */}
           <Popover
             id={idType}
             open={openType}
@@ -306,7 +316,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
                 overflow: "hidden",
                 borderRadius: "25px",
                 overflowY: "auto",
-                maxHeight: "60vh",
+                maxHeight: "30vh",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
@@ -375,7 +385,7 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
                 overflow: "hidden",
                 borderRadius: "25px",
                 overflowY: "auto",
-                maxHeight: "60vh",
+                maxHeight: "30vh",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
