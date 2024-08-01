@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import ProcessLoader from "../Loader/ProcessLoader";
@@ -8,6 +8,7 @@ import CustomPopOver from "../Inputs/CustomPopOver";
 import { Popover, Typography } from "@mui/material";
 import { ErrorToast, SuccessToast } from "../../utils/ShowToast";
 import { CreateExpensesApi } from "../../Https";
+import { fetchAccountsAmount } from "../../store/Slices/AccountSlice";
 // import { fetchExpenses } from "../../store/Slices/ExpenseSlice"; // Update action import to fetchExpenses
 
 const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
@@ -15,6 +16,8 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
     desc: "",
     expense: "",
     // branch: "",
+    account: "",
+    accountId: "",
     date: "",
   });
 
@@ -58,6 +61,16 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
     setLoading(false);
   };
 
+  const AccountState = useSelector((state) => state.AccountState);
+
+  useEffect(() => {
+    dispatch(
+      fetchAccountsAmount({
+        branchId: AuthState.data.role === 2 ? AuthState.data.branchId : -1,
+      })
+    );
+  }, []);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -76,6 +89,70 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
       <div className="flex flex-col justify-center py-5">
         <div className="flex flex-wrap gap-x-4 gap-y-4">
           <div className="flex flex-col gap-y-4">
+            <CustomPopOver
+              label={"Select Account"}
+              placeholder={"Select Account"}
+              required={false}
+              Value={formData.account || "Select Account"}
+              onClick={(e) => handleClick(e)}
+            />
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={() => handleClose()}
+              PaperProps={{
+                sx: {
+                  borderRadius: "25px", // Add rounded corners
+                  backgroundColor: "white", // Set background color to white
+                  width: "300px", // Set the width as needed
+                  overflow: "hidden", // Hide overflowing content
+                },
+              }}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Typography
+                sx={{
+                  p: 2,
+                  borderColor: "#000",
+                  backgroundColor: "#000",
+                  width: "400px",
+                  overflow: "hidden",
+                  borderRadius: "25px",
+                }}
+              >
+                <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
+                  <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                    {AccountState.data.map(({ _id, account_name }) => (
+                      <div
+                        key={_id}
+                        className="flex gap-x-3 items-center cursor-pointer"
+                        onClick={(e) => {
+                          handleChange("account", account_name);
+                          handleChange("accountId", _id);
+                          handleClose();
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                          checked={formData.account === account_name}
+                          readOnly
+                        />
+                        <span>{account_name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Typography>
+            </Popover>
             <CustomInput
               id="desc"
               Type="text"
