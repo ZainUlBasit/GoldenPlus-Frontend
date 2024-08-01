@@ -12,6 +12,7 @@ import { fetchCustomers } from "../../store/Slices/CustomerSlice";
 import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import ProcessLoader from "../Loader/ProcessLoader";
 import SearchBox from "../SearhBox/SearchBox";
+import { fetchAccountsAmount } from "../../store/Slices/AccountSlice";
 
 const PaymentModal = ({ OpenModal, setOpenModal }) => {
   const [userType, setUserType] = useState("");
@@ -83,6 +84,16 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
   const CustomerState = useSelector((state) => state.CustomerState); // Ensure you have a slice to fetch users (companies and customers)
   const CompanyState = useSelector((state) => state.CompanyState); // Ensure you have a slice to fetch users (companies and customers)
   const AuthState = useSelector((state) => state.AuthState); // Ensure you have a slice to fetch users (companies and customers)
+
+  const AccountState = useSelector((state) => state.AccountState);
+
+  useEffect(() => {
+    dispatch(
+      fetchAccountsAmount({
+        branchId: AuthState.data.role === 2 ? AuthState.data.branchId : -1,
+      })
+    );
+  }, []);
 
   useEffect(() => {
     dispatch(
@@ -507,22 +518,22 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
                   >
                     <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                       <div className="w-full flex flex-col justify-between gap-y-3 items-start">
-                        {BankNameData.map(({ _id, name }) => (
+                        {AccountState.data.map(({ _id, account_name }) => (
                           <div
                             key={_id}
                             className="flex gap-x-3 items-center cursor-pointer"
                             onClick={() => {
                               handleClose("bank");
-                              setBankName(name);
+                              setBankName(account_name);
                             }}
                           >
                             <input
                               type="checkbox"
                               className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                              checked={bankName === name}
+                              checked={bankName === account_name}
                               readOnly
                             />
-                            <span>{name}</span>
+                            <span>{account_name}</span>
                           </div>
                         ))}
                       </div>
@@ -534,8 +545,17 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
                   Type="number"
                   label="Bank Number"
                   placeholder="Enter Bank Number"
-                  Value={bankNumber}
-                  setValue={(value) => setBankNumber(value)}
+                  Value={
+                    AccountState.data.find((dt) => dt.account_name === bankName)
+                      ?.account_no
+                  }
+                  setValue={(value) =>
+                    setBankNumber(
+                      AccountState.data.find(
+                        (dt) => dt.account_name === bankName
+                      )?.account_no
+                    )
+                  }
                 />
               </>
             )}
