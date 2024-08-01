@@ -114,9 +114,11 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
     );
   }, [dispatch]);
 
+  const [anchorElType, setAnchorElType] = useState(null);
   const [anchorElCompany, setAnchorElCompany] = useState(null);
   const [anchorElArticle, setAnchorElArticle] = useState(null);
   const [anchorElItem, setAnchorElItem] = useState(null);
+  const [anchorElSupplier, setAnchorElSupplier] = useState(null);
 
   const handleClickCompany = (event) => {
     setAnchorElCompany(event.currentTarget);
@@ -128,6 +130,19 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
 
   const handleClickItem = (event) => {
     setAnchorElItem(event.currentTarget);
+  };
+
+  const handleCloseType = () => {
+    setAnchorElType(null);
+  };
+  const handleClickType = (event) => {
+    setAnchorElType(event.currentTarget);
+  };
+  const handleCloseSupplier = () => {
+    setAnchorElSupplier(null);
+  };
+  const handleClickSupplier = (event) => {
+    setAnchorElSupplier(event.currentTarget);
   };
 
   const handleCloseCompany = () => {
@@ -144,18 +159,43 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
 
   const openCompany = Boolean(anchorElCompany);
   const openArticle = Boolean(anchorElArticle);
-  const openItem = Boolean(anchorElItem);
-  const idCompany = openCompany ? "simple-popover-company" : undefined;
   const idArticle = openArticle ? "simple-popover-article" : undefined;
+  const idCompany = openCompany ? "simple-popover-company" : undefined;
+  const openSupplier = Boolean(anchorElSupplier);
+  const idSupplier = openSupplier ? "simple-popover-Supplier" : undefined;
+  const openItem = Boolean(anchorElItem);
   const idItem = openItem ? "simple-popover-item" : undefined;
+  const openType = Boolean(anchorElType);
+  const idType = openType ? "simple-popover-Type" : undefined;
 
   const [SearchSize, setSearchSize] = useState("");
   const [SearchArticle, setSearchArticle] = useState("");
+  const [AccountType, setAccountType] = useState("");
+  const [Supplier, setSupplier] = useState("");
 
   return (
     <ModalWrapper open={OpenModal} setOpen={setOpenModal} title={"Add Stock"}>
       <div className="flex flex-row flex-wrap justify-center gap-x-4 gap-y-4 py-4">
         <div className="flex flex-col gap-y-4">
+          <CustomPopOver
+            label={"Select Type"}
+            placeholder={"Select Type"}
+            required={false}
+            Value={AccountType || "Select Type"}
+            onClick={handleClickType}
+          />
+          {AccountType === "Supplier" && (
+            <CustomPopOver
+              label={"Select Supplier"}
+              placeholder={"Select Supplier"}
+              required={false}
+              Value={
+                CompanyState.data.find((dt) => dt._id === Supplier)?.name ||
+                "Select Supplier"
+              }
+              onClick={handleClickSupplier}
+            />
+          )}
           <CustomPopOver
             label={"Select Article"}
             placeholder={"Select Article"}
@@ -166,6 +206,144 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
             }
             onClick={handleClickArticle}
           />
+          <Popover
+            id={idSupplier}
+            open={openSupplier}
+            anchorEl={anchorElSupplier}
+            onClose={handleCloseSupplier}
+            PaperProps={{
+              sx: {
+                borderRadius: "25px",
+                backgroundColor: "white",
+                // width: "300px",
+                overflow: "hidden",
+              },
+            }}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Typography
+              sx={{
+                p: 2,
+                borderColor: "#465462",
+                backgroundColor: "#465462",
+                // width: "400px",
+                overflow: "hidden",
+                borderRadius: "25px",
+                overflowY: "auto",
+                maxHeight: "60vh",
+              }}
+            >
+              <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
+                <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  {CompanyState.data &&
+                    CompanyState.data
+                      // .filter((dt) => {
+                      //   const lowerCaseSearch = SearchArticle.toLowerCase();
+                      //   const lowerCaseStation = dt.name.toLowerCase();
+                      //   if (SearchArticle !== "") {
+                      //     return lowerCaseStation.includes(lowerCaseSearch);
+                      //   } else {
+                      //     return dt;
+                      //   }
+                      // })
+                      .map((dt) => (
+                        <div
+                          key={dt._id}
+                          className="flex gap-x-3 items-center cursor-pointer"
+                          onClick={() => {
+                            handleCloseSupplier();
+                            setSupplier(dt._id);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                            checked={Supplier === dt._id}
+                            readOnly
+                          />
+                          <span>{dt.name}</span>
+                        </div>
+                      ))}
+                </div>
+              </div>
+            </Typography>
+          </Popover>
+          <Popover
+            id={idType}
+            open={openType}
+            anchorEl={anchorElType}
+            onClose={handleCloseType}
+            PaperProps={{
+              sx: {
+                borderRadius: "25px",
+                backgroundColor: "white",
+                // width: "300px",
+                overflow: "hidden",
+              },
+            }}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Typography
+              sx={{
+                p: 2,
+                borderColor: "#465462",
+                backgroundColor: "#465462",
+                // width: "400px",
+                overflow: "hidden",
+                borderRadius: "25px",
+                overflowY: "auto",
+                maxHeight: "60vh",
+              }}
+            >
+              <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
+                <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  {ArticleState.data &&
+                    ["Self", "Supplier"]
+                      // .filter((dt) => {
+                      //   const lowerCaseSearch = SearchArticle.toLowerCase();
+                      //   const lowerCaseStation = dt.name.toLowerCase();
+                      //   if (SearchArticle !== "") {
+                      //     return lowerCaseStation.includes(lowerCaseSearch);
+                      //   } else {
+                      //     return dt;
+                      //   }
+                      // })
+                      .map((dt) => (
+                        <div
+                          key={dt}
+                          className="flex gap-x-3 items-center cursor-pointer"
+                          onClick={() => {
+                            handleCloseType();
+                            setAccountType(dt);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                            checked={AccountType === dt}
+                            readOnly
+                          />
+                          <span>{dt}</span>
+                        </div>
+                      ))}
+                </div>
+              </div>
+            </Typography>
+          </Popover>
           <Popover
             id={idArticle}
             open={openArticle}
