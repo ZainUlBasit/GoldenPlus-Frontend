@@ -44,6 +44,8 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
 
     try {
       const response = await CreateExpensesApi({
+        account: AccountState.data.find((dt) => dt._id === formData.accountId)
+          ?.account_name,
         ...formData,
         branch:
           AuthState.data.role === 2
@@ -93,7 +95,10 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
               label={"Select Account"}
               placeholder={"Select Account"}
               required={false}
-              Value={formData.account || "Select Account"}
+              Value={
+                AccountState.data.find((dt) => dt._id === formData.accountId)
+                  ?.account_name || "Select Account"
+              }
               onClick={(e) => handleClick(e)}
             />
             <Popover
@@ -135,7 +140,6 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
                         key={_id}
                         className="flex gap-x-3 items-center cursor-pointer"
                         onClick={(e) => {
-                          handleChange("account", account_name);
                           handleChange("accountId", _id);
                           handleClose();
                         }}
