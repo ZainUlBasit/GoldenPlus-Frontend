@@ -30,6 +30,7 @@ import ReturnInvoice from "./components/Invoices/ReturnInvoice";
 import ItemLedgerReport from "./components/Invoices/ItemLedgerReport";
 import Summary from "./pages/Cash Payments/Summary";
 import CustomerReport from "./components/Invoices/CustomerReport";
+import CompanyReport from "./components/Invoices/CompanyReport";
 
 const router = createBrowserRouter([
   {
@@ -165,6 +166,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CustomerReport />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/company-report",
+    element: (
+      <ProtectedRoute>
+        <CompanyReport />
       </ProtectedRoute>
     ),
   },

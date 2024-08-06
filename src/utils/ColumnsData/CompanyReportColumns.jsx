@@ -1,4 +1,4 @@
-export const CustomerReportColumns = [
+export const CompanyReportColumns = [
   {
     id: "name",
     title: "Name",
@@ -6,11 +6,6 @@ export const CustomerReportColumns = [
   {
     id: "total",
     title: "Total",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "return_amount",
-    title: "Return Amount",
     format: (value) => value.toLocaleString("en-US"),
   },
   {

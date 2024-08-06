@@ -37,28 +37,54 @@ const AddStockModal = ({ OpenModal, setOpenModal }) => {
       setLoading(false);
     } else {
       try {
-        const response = await UpdateItemQtyApi({
-          articleId: ArticleId,
-          article_name: ArticleName,
-          size: size,
-          sizeId: sizeId,
-          qty: Number(NewStock),
-          purchase: Number(Purchase),
-          invoice_no: InvoiceNo,
-          truck_no: TruckNo,
-          desc: Desc,
-          branchId:
-            AuthState.data.role === 2 ? AuthState.data.branchId._id : "",
-          branch_name:
-            AuthState.data.role === 2 ? AuthState.data.branchId.name : "",
-          branch:
-            AuthState.data.role === 2
-              ? AuthState.data.branchId.branch_number
-              : -1,
-          date: CurrentDate,
-          supplierId: Supplier,
-          type: AccountType === "Self" ? 1 : AccountType === "Supplier" && 2,
-        });
+        const response = await UpdateItemQtyApi(
+          Supplier
+            ? {
+                articleId: ArticleId,
+                article_name: ArticleName,
+                size: size,
+                sizeId: sizeId,
+                qty: Number(NewStock),
+                purchase: Number(Purchase),
+                invoice_no: InvoiceNo,
+                truck_no: TruckNo,
+                desc: Desc,
+                branchId:
+                  AuthState.data.role === 2 ? AuthState.data.branchId._id : "",
+                branch_name:
+                  AuthState.data.role === 2 ? AuthState.data.branchId.name : "",
+                branch:
+                  AuthState.data.role === 2
+                    ? AuthState.data.branchId.branch_number
+                    : -1,
+                date: CurrentDate,
+                supplierId: Supplier,
+                type:
+                  AccountType === "Self" ? 1 : AccountType === "Supplier" && 2,
+              }
+            : {
+                articleId: ArticleId,
+                article_name: ArticleName,
+                size: size,
+                sizeId: sizeId,
+                qty: Number(NewStock),
+                purchase: Number(Purchase),
+                invoice_no: InvoiceNo,
+                truck_no: TruckNo,
+                desc: Desc,
+                branchId:
+                  AuthState.data.role === 2 ? AuthState.data.branchId._id : "",
+                branch_name:
+                  AuthState.data.role === 2 ? AuthState.data.branchId.name : "",
+                branch:
+                  AuthState.data.role === 2
+                    ? AuthState.data.branchId.branch_number
+                    : -1,
+                date: CurrentDate,
+                type:
+                  AccountType === "Self" ? 1 : AccountType === "Supplier" && 2,
+              }
+        );
         if (response.data.success) {
           SuccessToast(response.data.data.msg);
           dispatch(

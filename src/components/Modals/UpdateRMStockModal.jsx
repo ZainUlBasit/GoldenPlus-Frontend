@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "../Inputs/CustomInput";
 import CustomPopOver from "../Inputs/CustomPopOver";
 import { SuccessToast, ErrorToast } from "../../utils/ShowToast";
-import { AddRM_StatsApi, UpdateItemQtyApi } from "../../Https";
+import { UpdateItemQtyApi, Update_RM_StatsApi } from "../../Https";
 import { fetchItems } from "../../store/Slices/ItemSlice";
 import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import { fetchArticles } from "../../store/Slices/ArticleSlice";
@@ -14,18 +14,21 @@ import { fetchCompanyItemLedger } from "../../store/Slices/CompanyItemLegderSlic
 import { fetchRMStats } from "../../store/Slices/RMStatsSlice";
 import moment from "moment";
 
-const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
-  const [supplierId, setSupplierId] = useState("");
-  const [supplier_name, setSupplier_name] = useState("");
-  const [rm_name, setRm_name] = useState("");
-  const [Purchase, setPurchase] = useState("");
-  const [NewStock, setNewStock] = useState("");
-  const [InvoiceNo, setInvoiceNo] = useState("");
-  const [TruckNo, setTruckNo] = useState("");
+const UpdateRMStockModal = ({ OpenModal, setOpenModal, itemData }) => {
+  console.log(itemData);
+  const [supplierId, setSupplierId] = useState(itemData.supplierId || "");
+  const [supplier_name, setSupplier_name] = useState(
+    itemData.supplier_name || ""
+  );
+  const [rm_name, setRm_name] = useState(itemData.rm_name || "");
+  const [Purchase, setPurchase] = useState(itemData.purchase || "");
+  const [NewStock, setNewStock] = useState(itemData.qty || "");
+  const [InvoiceNo, setInvoiceNo] = useState(itemData.invoice_no || "");
+  const [TruckNo, setTruckNo] = useState(itemData.truck_no || "");
   const [CurrentDate, setDate] = useState(
-    moment(new Date()).format("YYYY-MM-DD")
-  ); // Initialize with current date
-  const [Desc, setDesc] = useState("");
+    moment(new Date(itemData.date * 1000)).format("YYYY-MM-DD") || ""
+  );
+  const [Desc, setDesc] = useState(itemData.desc || "");
   const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -62,7 +65,8 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
                 branch: -1,
               };
 
-        const response = await AddRM_StatsApi({
+        const response = await Update_RM_StatsApi({
+          id: itemData._id,
           supplierId,
           supplier_name,
           rm_name,
@@ -150,7 +154,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
   const idArticle = openArticle ? "simple-popover-article" : undefined;
   const idItem = openItem ? "simple-popover-item" : undefined;
 
-  const [oldBalance, setOldBalance] = useState(false);
+  const [oldBalance, setOldBalance] = useState(itemData.old || false);
 
   const handleChange = (e) => {
     setOldBalance(e.target.value === "true");
@@ -160,7 +164,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
     <ModalWrapper
       open={OpenModal}
       setOpen={setOpenModal}
-      title={"Add Raw Material"}
+      title={"Update Raw Material"}
     >
       <div className="flex flex-row flex-wrap justify-center gap-x-4 gap-y-4 py-4">
         <div className="flex flex-col gap-y-4">
@@ -332,7 +336,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
             onClick={handleSubmit}
             className="w-[50%] hover:bg-[#394B92] py-3 hover:text-white border-2 border-[#394B92] text-[#394B92] font-[900] text-xl hover:rounded-xl transition-all ease-in-out duration-500"
           >
-            Add Stock
+            Update Stock
           </button>
         )}
       </div>
@@ -340,4 +344,4 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
   );
 };
 
-export default AddRMStockModal;
+export default UpdateRMStockModal;

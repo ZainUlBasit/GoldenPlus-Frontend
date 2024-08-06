@@ -5,18 +5,20 @@ import { CompanyColumns } from "../../utils/ColumnsData/CompanyColumns";
 import SearchableTable from "../../components/Tables/SearchableTable";
 import EditCompany from "../../components/Modals/EditCompany";
 import DeleteModal from "../../components/Modals/DeleteModal";
-import { DeleteCompanyApi } from "../../Https";
+import { DeleteCompanyApi, Delete_RM_StatsApi } from "../../Https";
 import { SuccessToast } from "../../utils/ShowToast";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import { fetchRMStats } from "../../store/Slices/RMStatsSlice";
 import { RM_Stat_Columns } from "../../utils/ColumnsData/RM_Stat_Columns";
+import UpdateRMStockModal from "../../components/Modals/UpdateRMStockModal";
 
 const RM_Stats = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
   const [OpenEditModal, setOpenEditModal] = useState(false);
   const [Selected, setSelected] = useState("");
   const [SearchText, setSearchText] = useState("");
+  const [Loading, setLoading] = useState("");
 
   const RMStatsState = useSelector((state) => state.RMStatsState);
   const AuthState = useSelector((state) => state.AuthState);
@@ -51,13 +53,11 @@ const RM_Stats = () => {
           )}
           Columns={RM_Stat_Columns}
         />
-        {/* {OpenEditModal && (
-          <EditCompany
-            open={OpenEditModal}
-            setOpen={setOpenEditModal}
-            CurrentCompany={CompanyState.data.find(
-              (dt) => dt._id === Selected._id
-            )}
+        {OpenEditModal && (
+          <UpdateRMStockModal
+            OpenModal={OpenEditModal}
+            setOpenModal={setOpenEditModal}
+            itemData={RMStatsState.data.find((dt) => dt._id === Selected._id)}
           />
         )}
 
@@ -68,13 +68,20 @@ const RM_Stats = () => {
             onSubmit={async () => {
               setLoading(true);
               try {
-                const response = await DeleteCompanyApi({
-                  companyId: CustomerID,
+                const response = await Delete_RM_StatsApi({
+                  id: Selected._id,
                 });
                 if (response.data.success) {
                   SuccessToast(response.data.data.msg);
                   setOpenDeleteModal(false);
-                  dispatch(fetchCustomers());
+                  dispatch(
+                    fetchRMStats({
+                      branchId:
+                        AuthState.data.role === 2
+                          ? AuthState.data.branchId._id
+                          : "",
+                    })
+                  );
                 }
               } catch (err) {
                 console.log(err);
@@ -83,7 +90,7 @@ const RM_Stats = () => {
             }}
             Loading={Loading}
           />
-        )} */}
+        )}
       </div>
     </div>
   );

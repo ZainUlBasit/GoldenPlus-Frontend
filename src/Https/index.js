@@ -35,10 +35,15 @@ export const DeleteCompanyApi = (payload) =>
 export const GetCompanyApi = (payload) => api.post("/company/branch", payload);
 export const GetCompanyItemLedgerApi = (payload) =>
   api.post("/company/item-ledger", payload);
+// Raw Material
 export const GetRM_StatsApi = (payload) =>
   api.post("/raw-material/branch", payload);
 export const AddRM_StatsApi = (payload) =>
   api.post("/raw-material/add", payload);
+export const Update_RM_StatsApi = (payload) =>
+  api.patch("/raw-material/edit", payload);
+export const Delete_RM_StatsApi = (payload) =>
+  api.post("/raw-material/delete", payload);
 
 export const UpdateCompanyOpeningBalanceApi = (payload) =>
   api.patch("/company/update-opening-balance", payload);
