@@ -15,6 +15,7 @@ const Info = () => {
   const [OpenEditModal, setOpenEditModal] = useState(false);
   const [Selected, setSelected] = useState("");
   const [SearchText, setSearchText] = useState("");
+  const [Loading, setLoading] = useState(false);
 
   const CompanyState = useSelector((state) => state.CompanyState);
   const AuthState = useSelector((state) => state.AuthState);
