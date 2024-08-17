@@ -37,8 +37,16 @@ const EditStockModal = ({ OpenModal, setOpenModal, CurrentState }) => {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
+    console.log(sizeId, NewStock, Purchase, InvoiceNo, TruckNo);
 
-    if (!sizeId || !NewStock || !Purchase || !InvoiceNo || !TruckNo || !Date) {
+    if (
+      !sizeId ||
+      !NewStock ||
+      Purchase === undefined ||
+      InvoiceNo !== undefined ||
+      TruckNo !== undefined ||
+      !Date
+    ) {
       ErrorToast("All fields are required");
       setLoading(false);
     } else {
