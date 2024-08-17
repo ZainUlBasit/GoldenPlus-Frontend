@@ -43,8 +43,8 @@ const EditStockModal = ({ OpenModal, setOpenModal, CurrentState }) => {
       !sizeId ||
       !NewStock ||
       Purchase === undefined ||
-      InvoiceNo !== undefined ||
-      TruckNo !== undefined ||
+      InvoiceNo === undefined ||
+      TruckNo === undefined ||
       !Date
     ) {
       ErrorToast("All fields are required");
