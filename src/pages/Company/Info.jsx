@@ -89,7 +89,7 @@ const Info = () => {
                 if (response.data.success) {
                   SuccessToast(response.data.data.msg);
                   setOpenDeleteModal(false);
-                  dispatch(fetchCustomers());
+                  dispatch(fetchCompanies());
                 }
               } catch (err) {
                 console.log(err);
