@@ -85,9 +85,7 @@ const Info = () => {
             onSubmit={async () => {
               setLoading(true);
               try {
-                const response = await DeleteCompanyApi({
-                  companyId: Selected._id,
-                });
+                const response = await DeleteCompanyApi(Selected._id);
                 if (response.data.success) {
                   SuccessToast(response.data.data.msg);
                   setOpenDeleteModal(false);

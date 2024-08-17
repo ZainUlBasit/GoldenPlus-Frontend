@@ -30,8 +30,7 @@ export const CreateCompanyApi = (payload) =>
   api.post("/company/create", payload);
 export const UpdateCompanyApi = (payload) =>
   api.patch("/company/update", payload);
-export const DeleteCompanyApi = (payload) =>
-  api.post("/company/delete", payload);
+export const DeleteCompanyApi = (id) => api.delete("/company/delete/" + id);
 export const GetCompanyApi = (payload) => api.post("/company/branch", payload);
 export const GetCompanyItemLedgerApi = (payload) =>
   api.post("/company/item-ledger", payload);
