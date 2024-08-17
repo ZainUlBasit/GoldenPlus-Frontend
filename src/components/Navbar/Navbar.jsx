@@ -26,10 +26,9 @@ import { MdFactory } from "react-icons/md";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const [OpenModal, setOpenModal] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-
-  const [OpenModal, setOpenModal] = useState(false);
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);

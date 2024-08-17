@@ -55,6 +55,8 @@ export const CreateItemApi = (payload) => api.post("/item/create", payload);
 export const DeleteItemApi = (payload) => api.post("/item/delete", payload);
 export const UpdateItemApi = (payload) => api.patch("/item/update", payload);
 export const UpdateItemQtyApi = (payload) => api.post("/stock/add", payload);
+export const EditStockStatsApi = (payload) => api.patch("/stock/edit", payload);
+export const DeleteStockStatsApi = (id) => api.delete("/stock/delete/" + id);
 export const GetStockStatsApi = (payload) => api.post("/stock/branch", payload);
 
 export const GetItemsByBranchApi = (payload) =>
@@ -93,6 +95,9 @@ export const CreatePaymentApi = (payload) =>
   api.post("/payment/create", payload);
 export const GetPaymentsByIdApi = (payload) =>
   api.post("/payment/branch", payload);
+export const DeletePaymentAPI = (id) => api.delete("/payment/delete/" + id);
+export const UpdatePaymentAPI = (id, payload) =>
+  api.delete("/payment/update/" + id, payload);
 
 // Transactions Request
 export const CheckInvoiceNoApi = (payload) =>

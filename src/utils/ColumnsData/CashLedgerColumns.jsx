@@ -1,5 +1,13 @@
 export const CashLedgerColumns = [
   {
+    id: "actions",
+    title: "Actions",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
     id: "date",
     title: "Date",
     web1: "20px",

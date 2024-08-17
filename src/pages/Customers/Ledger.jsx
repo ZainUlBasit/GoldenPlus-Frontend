@@ -13,6 +13,11 @@ import Navbar from "../../components/Navbar/Navbar";
 import { fetchReturnLedger } from "../../store/Slices/ReturnSlice";
 import { useNavigate } from "react-router-dom";
 import exportToExcel from "../../utils/ExportToExcel";
+import moment from "moment";
+import DeleteModal from "../../components/Modals/DeleteModal";
+import { DeletePaymentAPI } from "../../Https";
+import { SuccessToast } from "../../utils/ShowToast";
+import EditPaymentModal from "../../components/Modals/EditPaymentModal";
 
 export default function CustomerLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
@@ -24,6 +29,10 @@ export default function CustomerLedger() {
   const CustomerState = useSelector((state) => state.CustomerState);
   const PaymentState = useSelector((state) => state.PaymentState);
   const ReturnState = useSelector((state) => state.ReturnState);
+  const [OpenDeleteCashModal, setOpenDeleteCashModal] = useState(false);
+  const [OpenEditModal, setOpenEditModal] = useState(false);
+  const [Selected, setSelected] = useState("");
+  const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const CustomerItemLegderState = useSelector(
     (state) => state.CustomerItemLegderState
@@ -98,26 +107,29 @@ export default function CustomerLedger() {
         Placeholder={"Select Customer"}
       />
       <div className="w-full flex justify-end px-2 py-3">
-        {PaymentState.data.length !== 0 && (
+        {
           <div
             className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
             onClick={() => {
-              exportToExcel(CustomerItemLegderState.data, "MyExcelFile");
+              exportToExcel(
+                OpenCashLedger
+                  ? PaymentState.data
+                  : OpenItemLedger
+                  ? CustomerItemLegderState.data
+                  : OpenReturnLedger && ReturnState.data,
+                `${
+                  OpenCashLedger
+                    ? "Cash Ledger"
+                    : OpenItemLedger
+                    ? "Item Ledger"
+                    : OpenReturnLedger && "Return Ledger"
+                }-${moment(new Date()).format("DD MMMM YYYY")}`
+              );
             }}
           >
             Convert to Excel
           </div>
-        )}
-        {PaymentState.data.length !== 0 && (
-          <div
-            className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
-            onClick={() => {
-              exportToExcel(PaymentState.data, "MyExcelFile");
-            }}
-          >
-            Convert to Excel
-          </div>
-        )}
+        }
       </div>
       {OpenItemLedger &&
         (CustomerItemLegderState.loading ? (
@@ -155,8 +167,47 @@ export default function CustomerLedger() {
             columns={CashLedgerColumns}
             title={"Cash Ledger Details"}
             rows={PaymentState.data}
+            setOpenDeleteModal={setOpenDeleteCashModal}
+            setSelected={setSelected}
+            setOpenEditModal={setOpenEditModal}
           />
         ))}
+
+      {OpenEditModal && (
+        <EditPaymentModal
+          OpenModal={OpenEditModal}
+          setOpenModal={setOpenEditModal}
+          paymentData={Selected}
+        />
+      )}
+      {OpenDeleteCashModal && (
+        <DeleteModal
+          Open={OpenDeleteCashModal}
+          setOpen={setOpenDeleteCashModal}
+          onSubmit={async () => {
+            setLoading(true);
+            try {
+              const response = await DeletePaymentAPI(Selected._id);
+              if (response.data.success) {
+                SuccessToast(response.data.data.msg);
+                setOpenDeleteCashModal(false);
+                dispatch(
+                  fetchPaymentById({
+                    user_Id: CurrentCustomer,
+                    startDate: fromDate,
+                    endDate: toDate,
+                    branch: 1,
+                  })
+                );
+              }
+            } catch (err) {
+              console.log(err);
+            }
+            setLoading(false);
+          }}
+          Loading={Loading}
+        />
+      )}
 
       {OpenReturnLedger &&
         (ReturnState.loading ? (

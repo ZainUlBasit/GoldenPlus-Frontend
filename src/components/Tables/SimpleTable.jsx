@@ -10,6 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const TableWrapper = styled.div`
   /* Tailwind="flex justify-center flex-col"> */
@@ -34,7 +36,14 @@ const BannerHeader = styled.h1.attrs({
   }
 `;
 
-export default function SimpleTable({ rows, columns, title }) {
+export default function SimpleTable({
+  rows,
+  columns,
+  title,
+  setOpenDeleteModal,
+  setOpenEditModal,
+  setSelected,
+}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -49,10 +58,10 @@ export default function SimpleTable({ rows, columns, title }) {
 
   const HandleDoubleClick = (e) => {
     // if (e.detail === 2) {
-    //   setSelID(e.target.id);
-    // console.log(e.target.name);
-    //   if (title === "ITEM INFO") setEditItemModal(true);
-    //   if (title === "COMPANIES INFO") setEditCompanyModal(true);
+    //   if (setOpenDeleteModal && setSelected) {
+    //     setOpenDeleteModal(true);
+    //     setSelected(rows.find((dt) => dt._id === e.target.id));
+    //   }
     // }
   };
   return rows.length == 0 ? (
@@ -105,18 +114,37 @@ export default function SimpleTable({ rows, columns, title }) {
                           const value = row[id];
                           return (
                             <TableCell
-                              // id={c_id}
+                              id={row._id}
                               onClick={HandleDoubleClick}
                               className={"font-[Roboto] select-none"}
                               // key={column.id}
                               // align={column.align}
                               style={{ fontWeight: "700", fontSize: "0.95rem" }}
                             >
-                              {id === "date"
-                                ? moment(new Date(value * 1000)).format(
-                                    "DD/MM/YY"
-                                  )
-                                : value || "N/A"}
+                              {id === "actions" ? (
+                                <div className="flex justify-center items-center gap-x-2">
+                                  <BiEdit
+                                    className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
+                                    onClick={() => {
+                                      setSelected(row);
+                                      setOpenEditModal(true);
+                                    }}
+                                  />
+                                  <RiDeleteBin5Line
+                                    className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[red] transition-all duration-500"
+                                    onClick={() => {
+                                      setSelected(row);
+                                      setOpenDeleteModal(true);
+                                    }}
+                                  />
+                                </div>
+                              ) : id === "date" ? (
+                                moment(new Date(value * 1000)).format(
+                                  "DD/MM/YY"
+                                )
+                              ) : (
+                                value || "N/A"
+                              )}
                               {/* {column.format && typeof value === "number" */}
                               {/* ? column.format(value) */}
                               {/* : value} */}

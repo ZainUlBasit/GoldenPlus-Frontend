@@ -18,7 +18,9 @@ const style = {
   borderRadius: 2,
   outline: "none",
   overflow: "hidden",
+  overflowY: "auto",
   height: "auto",
+  maxHeight: "90vh",
 };
 
 export default function ModalWrapper({ open, setOpen, children, title }) {

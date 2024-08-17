@@ -6,12 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanyItemLedger } from "../../store/Slices/CompanyItemLegderSlice";
 import { StockStatsColumns } from "../../utils/ColumnsData/StockStatsColumns";
 import exportToExcel from "../../utils/ExportToExcel";
+import EditStockModal from "../../components/Modals/EditStockModal";
+import DeleteModal from "../../components/Modals/DeleteModal";
+import { DeleteStockStatsApi } from "../../Https";
+import { SuccessToast } from "../../utils/ShowToast";
 
 const StockStats = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
   const [OpenEditModal, setOpenEditModal] = useState(false);
   const [Selected, setSelected] = useState("");
   const [SearchText, setSearchText] = useState("");
+  const [Loading, setLoading] = useState(false);
 
   const CompanyItemLegderState = useSelector(
     (state) => state.CompanyItemLegderState
@@ -69,6 +74,45 @@ const StockStats = () => {
           }
           Columns={StockStatsColumns}
         />
+
+        {OpenEditModal && (
+          <EditStockModal
+            OpenModal={OpenEditModal}
+            setOpenModal={setOpenEditModal}
+            CurrentState={Selected}
+          />
+        )}
+
+        {OpenDeleteModal && (
+          <DeleteModal
+            Open={OpenDeleteModal}
+            setOpen={setOpenDeleteModal}
+            onSubmit={async () => {
+              setLoading(true);
+              try {
+                const response = await DeleteStockStatsApi(Selected._id);
+                if (response.data.success) {
+                  SuccessToast(response.data.data.msg);
+                  setOpenDeleteModal(false);
+                  dispatch(
+                    fetchCompanyItemLedger({
+                      branchId:
+                        AuthState.data.role === 2
+                          ? AuthState.data.branchId._id
+                          : "",
+                      startDate: 0,
+                      endDate: Math.floor(new Date() / 1000),
+                    })
+                  );
+                }
+              } catch (err) {
+                console.log(err);
+              }
+              setLoading(false);
+            }}
+            Loading={Loading}
+          />
+        )}
       </div>
     </div>
   );
