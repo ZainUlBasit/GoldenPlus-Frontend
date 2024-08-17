@@ -86,7 +86,7 @@ const Info = () => {
               setLoading(true);
               try {
                 const response = await DeleteCompanyApi({
-                  companyId: CustomerID,
+                  companyId: Selected._id,
                 });
                 if (response.data.success) {
                   SuccessToast(response.data.data.msg);
