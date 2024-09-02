@@ -43,6 +43,16 @@ const CashPaymentNav = () => {
           navigate("/cash-summary");
         }}
       />
+      <NavBtn
+        title={"Fixed Assets"}
+        Icon={RiSecurePaymentFill}
+        Type={"modal"}
+        link={"/"}
+        Width={"w-[230px]"}
+        onClick={() => {
+          navigate("/cash-summary");
+        }}
+      />
       {OpenAddModal && (
         <PaymentModal OpenModal={OpenAddModal} setOpenModal={setOpenAddModal} />
       )}
