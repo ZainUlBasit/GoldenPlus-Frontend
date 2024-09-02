@@ -31,6 +31,7 @@ import ItemLedgerReport from "./components/Invoices/ItemLedgerReport";
 import Summary from "./pages/Cash Payments/Summary";
 import CustomerReport from "./components/Invoices/CustomerReport";
 import CompanyReport from "./components/Invoices/CompanyReport";
+import FixedAssets from "./pages/Cash Payments/FixedAssets";
 
 const router = createBrowserRouter([
   {
@@ -214,6 +215,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Summary />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/fixed-assets",
+    element: (
+      <ProtectedRoute>
+        <FixedAssets />
       </ProtectedRoute>
     ),
   },
