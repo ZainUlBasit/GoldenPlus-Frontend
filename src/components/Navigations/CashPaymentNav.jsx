@@ -36,11 +36,11 @@ const CashPaymentNav = () => {
       <NavBtn
         title={"Cash Summary"}
         Icon={RiSecurePaymentFill}
-        Type={"modal"}
-        link={"/"}
+        Type={"link"}
+        link={"/fixed-assets"}
         Width={"w-[230px]"}
         onClick={() => {
-          navigate("/cash-summary");
+          navigate("/fixed-assets");
         }}
       />
       <NavBtn
