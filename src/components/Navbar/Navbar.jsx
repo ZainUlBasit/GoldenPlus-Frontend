@@ -105,7 +105,7 @@ const Navbar = () => {
         onClose={toggleDrawer(false)}
         classes={{ paper: "fade-in" }}
       >
-        <div className="w-auto min-w-[300px] bg-[black] h-full">
+        <div className="w-auto min-w-[300px] bg-[black] h-full overflow-y-auto">
           <div className="flex justify-center py-6 px-4">
             <img
               src={Logo1}
