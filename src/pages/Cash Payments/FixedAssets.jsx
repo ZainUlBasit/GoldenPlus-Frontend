@@ -12,7 +12,7 @@ const FixedAssets = () => {
     <div className="relative">
       <Navbar />
       <CashPaymentNav />
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center gap-x-3 gap-y-3 mb-4">
         <div className="bg-[#464F51] border-2 border-[#464F51] hover:bg-[#464f51c7] text-white px-3 py-3 text-xl font-bold hover:rounded-[10px] transition-all ease-in-out duration-500 cursor-pointer">
           Add Fixed Assets
         </div>
