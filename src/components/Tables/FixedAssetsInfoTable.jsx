@@ -12,6 +12,7 @@ import {
   PaymentInfoCustomerColumns,
   PaymentInfoSupplierColumns,
 } from "../../utils/ColumnsData/PaymentInfoColumns";
+import { AssetsColumns } from "../../utils/ColumnsData/AssetsColumns";
 // import { PaymentInfoColumns } from "@/assets/Columns/PaymentInfoColumns";
 
 export default function FixedAssetsInfoTable({ Rows, type }) {
