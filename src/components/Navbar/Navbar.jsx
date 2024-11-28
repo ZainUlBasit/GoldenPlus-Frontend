@@ -106,7 +106,7 @@ const Navbar = () => {
         classes={{ paper: "fade-in" }}
       >
         <div className="w-auto min-w-[300px] bg-[black] h-full overflow-y-auto">
-          <div className="flex justify-center py-6 px-4">
+          <div className="flex justify-center py-10 pb-5 px-4">
             <img
               src={Logo2}
               alt="Logo"
