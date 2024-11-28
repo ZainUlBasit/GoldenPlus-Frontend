@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { IoExit } from "react-icons/io5";
 import Logo from "./logo.png";
-import Logo1 from "./logo1.png";
+import Logo2 from "./logo2.png";
 import Logout from "../Modals/Logout";
 import { MdFactory } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -108,7 +108,7 @@ const Navbar = () => {
         <div className="w-auto min-w-[300px] bg-[black] h-full overflow-y-auto">
           <div className="flex justify-center py-6 px-4">
             <img
-              src={Logo1}
+              src={Logo2}
               alt="Logo"
               className="w-[200px] cursor-pointer"
               onClick={() => navigate("/home")}
