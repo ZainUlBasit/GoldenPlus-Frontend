@@ -93,7 +93,9 @@ const Info = () => {
             ItemState.data.filter((dt) =>
               SearchText === ""
                 ? true
-                : Number(dt.article_name) === Number(SearchText)
+                : dt.article_name
+                    .toLowerCase()
+                    .includes(SearchText.toLowerCase())
             )
           }
           Columns={ItemColumns}
