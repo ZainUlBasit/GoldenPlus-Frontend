@@ -70,7 +70,9 @@ const StockStats = () => {
               .filter((dt) =>
                 SearchText === ""
                   ? true
-                  : Number(SearchText) === Number(dt.article_name)
+                  : dt.article_name
+                      .toLowerCase()
+                      .includes(SearchText.toLowerCase())
               )
               .sort((a, b) => new Date(b.date) - new Date(a.date))
           }
