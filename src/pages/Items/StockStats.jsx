@@ -72,7 +72,7 @@ const StockStats = () => {
                   ? true
                   : Number(SearchText) === Number(dt.article_name)
               )
-              .sort((a, b) => new Date(a.date) - new Date(b.date))
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
           }
           Columns={StockStatsColumns}
         />
