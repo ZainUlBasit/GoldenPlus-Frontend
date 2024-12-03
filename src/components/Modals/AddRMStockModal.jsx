@@ -13,6 +13,7 @@ import ProcessLoader from "../Loader/ProcessLoader";
 import { fetchCompanyItemLedger } from "../../store/Slices/CompanyItemLegderSlice";
 import { fetchRMStats } from "../../store/Slices/RMStatsSlice";
 import moment from "moment";
+import SearchBox from "../SearhBox/SearchBox";
 
 const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
   const [supplierId, setSupplierId] = useState("");
@@ -22,6 +23,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
   const [NewStock, setNewStock] = useState("");
   const [InvoiceNo, setInvoiceNo] = useState("");
   const [TruckNo, setTruckNo] = useState("");
+  const [SearchTextPop, setSearchTextPop] = useState("");
   const [CurrentDate, setDate] = useState(
     moment(new Date()).format("YYYY-MM-DD")
   ); // Initialize with current date
@@ -201,30 +203,46 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
                 width: "400px",
                 overflow: "hidden",
                 borderRadius: "25px",
+                maxHeight: "30vh",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
                 <div className="w-full flex flex-col justify-between gap-y-3 items-start">
+                  <SearchBox
+                    Value={SearchTextPop}
+                    SetValue={setSearchTextPop}
+                    Placeholder={"Search Supplier"}
+                  />
                   {CompanyState.data &&
-                    CompanyState.data.map((dt) => (
-                      <div
-                        key={dt._id}
-                        className="flex gap-x-3 items-center cursor-pointer"
-                        onClick={() => {
-                          handleCloseArticle();
-                          setSupplierId(dt._id);
-                          setSupplier_name(dt.name);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                          checked={supplierId === dt._id}
-                          readOnly
-                        />
-                        <span>{dt.name}</span>
-                      </div>
-                    ))}
+                    CompanyState.data
+                      .filter((dt) => {
+                        const lowerCaseSearch = SearchTextPop.toLowerCase();
+                        const lowerCaseStation = dt.name.toLowerCase();
+                        if (SearchTextPop !== "") {
+                          return lowerCaseStation.includes(lowerCaseSearch);
+                        } else {
+                          return dt;
+                        }
+                      })
+                      .map((dt) => (
+                        <div
+                          key={dt._id}
+                          className="flex gap-x-3 items-center cursor-pointer"
+                          onClick={() => {
+                            handleCloseArticle();
+                            setSupplierId(dt._id);
+                            setSupplier_name(dt.name);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
+                            checked={supplierId === dt._id}
+                            readOnly
+                          />
+                          <span>{dt.name}</span>
+                        </div>
+                      ))}
                 </div>
               </div>
             </Typography>

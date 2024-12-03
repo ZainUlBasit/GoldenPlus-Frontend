@@ -66,11 +66,13 @@ const StockStats = () => {
           setSearchText={setSearchText}
           CurrentData={
             CompanyItemLegderState.data &&
-            CompanyItemLegderState.data.filter((dt) =>
-              SearchText === ""
-                ? true
-                : Number(SearchText) === Number(dt.article_name)
-            )
+            CompanyItemLegderState.data
+              .filter((dt) =>
+                SearchText === ""
+                  ? true
+                  : Number(SearchText) === Number(dt.article_name)
+              )
+              .sort((a, b) => new Date(a.date) - new Date(b.date))
           }
           Columns={StockStatsColumns}
         />
