@@ -10,6 +10,10 @@ import EditStockModal from "../../components/Modals/EditStockModal";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { DeleteStockStatsApi } from "../../Https";
 import { SuccessToast } from "../../utils/ShowToast";
+import BasicDatePicker from "../../components/DatePicker/DatePicker";
+import dayjs from "dayjs";
+import { FaArrowRightArrowLeft } from "react-icons/fa6";
+import ToggleBtn from "../../components/Buttons/ToggleBtn";
 
 const StockStats = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
@@ -17,6 +21,11 @@ const StockStats = () => {
   const [Selected, setSelected] = useState("");
   const [SearchText, setSearchText] = useState("");
   const [Loading, setLoading] = useState(false);
+
+  const [ActiveDateFilter, setActiveDateFilter] = useState(false);
+
+  const [FromDate, setFromDate] = useState(dayjs());
+  const [ToDate, setToDate] = useState(dayjs());
 
   const CompanyItemLegderState = useSelector(
     (state) => state.CompanyItemLegderState
@@ -39,7 +48,25 @@ const StockStats = () => {
     <div className="relative">
       <Navbar />
       <ItemsNav />
-      <div className="flex justify-end px-4 py-4">
+      <div className="flex justify-end px-4 py-4 w-[90%] gap-x-2 items-center">
+        {ActiveDateFilter && (
+          <BasicDatePicker
+            title={"From Date"}
+            CurrentState={FromDate}
+            setCurrentState={setFromDate}
+          />
+        )}
+        {ActiveDateFilter && (
+          <FaArrowRightArrowLeft className="text-black text-2xl" />
+        )}
+        {ActiveDateFilter && (
+          <BasicDatePicker
+            title={"To Date"}
+            CurrentState={ToDate}
+            setCurrentState={setToDate}
+          />
+        )}
+        <ToggleBtn Value={ActiveDateFilter} setValue={setActiveDateFilter} />
         <div
           className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
           onClick={() => {
@@ -67,6 +94,17 @@ const StockStats = () => {
           CurrentData={
             CompanyItemLegderState.data &&
             CompanyItemLegderState.data
+              .filter((dt) => {
+                if (ActiveDateFilter) {
+                  return (
+                    dayjs(dt.date * 1000).format("YYYY-MM-DD") >=
+                      FromDate.format("YYYY-MM-DD") &&
+                    dayjs(dt.date * 1000).format("YYYY-MM-DD") <=
+                      ToDate.format("YYYY-MM-DD")
+                  );
+                }
+                return true;
+              })
               .filter((dt) =>
                 SearchText === ""
                   ? true
