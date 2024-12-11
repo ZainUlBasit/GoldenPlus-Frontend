@@ -8,6 +8,12 @@ const ReportNavData = [
     icon: FaInfo,
   },
   {
+    title: "Item Stats",
+    type: "link",
+    link: "/item-stats",
+    icon: FaInfo,
+  },
+  {
     title: "Add Expense",
     type: "modal",
     link: "/",

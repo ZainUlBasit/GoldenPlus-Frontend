@@ -32,6 +32,7 @@ import Summary from "./pages/Cash Payments/Summary";
 import CustomerReport from "./components/Invoices/CustomerReport";
 import CompanyReport from "./components/Invoices/CompanyReport";
 import FixedAssets from "./pages/Cash Payments/FixedAssets";
+import ItemStats from "./pages/Reports/ItemStats";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ItemInfo />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/item-stats",
+    element: (
+      <ProtectedRoute>
+        <ItemStats />
       </ProtectedRoute>
     ),
   },

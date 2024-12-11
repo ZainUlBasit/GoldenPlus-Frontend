@@ -147,9 +147,9 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
 
   const openCompany = Boolean(anchorElCompany);
   const openArticle = Boolean(anchorElArticle);
-  const openItem = Boolean(anchorElItem);
   const idCompany = openCompany ? "simple-popover-company" : undefined;
   const idArticle = openArticle ? "simple-popover-article" : undefined;
+  const openItem = Boolean(anchorElItem);
   const idItem = openItem ? "simple-popover-item" : undefined;
 
   const [oldBalance, setOldBalance] = useState(false);

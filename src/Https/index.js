@@ -3,7 +3,7 @@ import { BASE_URL, BASE_URL_LOCAL } from "../assets/config";
 
 const token = localStorage.getItem("token");
 export const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
@@ -13,7 +13,7 @@ export const api = axios.create({
 });
 
 export const apiForImage = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_LOCAL,
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -60,6 +60,9 @@ export const GetStockStatsApi = (payload) => api.post("/stock/branch", payload);
 
 export const GetItemsByBranchApi = (payload) =>
   api.post("/item/branch", payload);
+
+// Article Stats Requests
+export const GetArticlesStatsApi = (id) => api.get("/stats/article-stat/" + id);
 
 // Article Requests
 export const GetArticlesByBranchApi = (id) => api.get("/article/branch/" + id);

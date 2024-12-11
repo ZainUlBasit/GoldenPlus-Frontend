@@ -43,6 +43,7 @@ export default function SimpleTable({
   setOpenDeleteModal,
   setOpenEditModal,
   setSelected,
+  ReportTable,
 }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -78,23 +79,43 @@ export default function SimpleTable({
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={index}
-                    align={column.align}
-                    className="select-none"
-                    style={{
-                      minWidth: column.minWidth,
-                      backgroundColor: "#000",
-                      color: "white",
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      fontFamily: "'Roboto', sans-serif",
-                    }}
-                  >
-                    {column.title}
-                  </TableCell>
-                ))}
+                {ReportTable === true
+                  ? columns
+                      .filter((column) => column.id !== "actions")
+                      .map((column, index) => (
+                        <TableCell
+                          key={index}
+                          align={column.align}
+                          className="select-none"
+                          style={{
+                            minWidth: column.minWidth,
+                            backgroundColor: "#000",
+                            color: "white",
+                            fontWeight: "bold",
+                            fontSize: "1.1rem",
+                            fontFamily: "'Roboto', sans-serif",
+                          }}
+                        >
+                          {column.title}
+                        </TableCell>
+                      ))
+                  : columns.map((column, index) => (
+                      <TableCell
+                        key={index}
+                        align={column.align}
+                        className="select-none"
+                        style={{
+                          minWidth: column.minWidth,
+                          backgroundColor: "#000",
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: "1.1rem",
+                          fontFamily: "'Roboto', sans-serif",
+                        }}
+                      >
+                        {column.title}
+                      </TableCell>
+                    ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -110,47 +131,54 @@ export default function SimpleTable({
                         key={index}
                         style={{ cursor: "pointer" }}
                       >
-                        {columns.map(({ id }, key) => {
-                          const value = row[id];
-                          return (
-                            <TableCell
-                              id={row._id}
-                              onClick={HandleDoubleClick}
-                              className={"font-[Roboto] select-none"}
-                              // key={column.id}
-                              // align={column.align}
-                              style={{ fontWeight: "700", fontSize: "0.95rem" }}
-                            >
-                              {id === "actions" ? (
-                                <div className="flex justify-center items-center gap-x-2">
-                                  <BiEdit
-                                    className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
-                                    onClick={() => {
-                                      setSelected(row);
-                                      setOpenEditModal(true);
-                                    }}
-                                  />
-                                  <RiDeleteBin5Line
-                                    className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[red] transition-all duration-500"
-                                    onClick={() => {
-                                      setSelected(row);
-                                      setOpenDeleteModal(true);
-                                    }}
-                                  />
-                                </div>
-                              ) : id === "date" ? (
-                                moment(new Date(value * 1000)).format(
-                                  "DD/MM/YY"
-                                )
-                              ) : (
-                                value || "N/A"
-                              )}
-                              {/* {column.format && typeof value === "number" */}
-                              {/* ? column.format(value) */}
-                              {/* : value} */}
-                            </TableCell>
-                          );
-                        })}
+                        {columns
+                          .filter(
+                            (column) => column.id !== "actions" || !ReportTable
+                          )
+                          .map(({ id }, key) => {
+                            const value = row[id];
+                            return (
+                              <TableCell
+                                id={row._id}
+                                onClick={HandleDoubleClick}
+                                className={"font-[Roboto] select-none"}
+                                // key={column.id}
+                                // align={column.align}
+                                style={{
+                                  fontWeight: "700",
+                                  fontSize: "0.95rem",
+                                }}
+                              >
+                                {id === "actions" ? (
+                                  <div className="flex justify-center items-center gap-x-2">
+                                    <BiEdit
+                                      className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
+                                      onClick={() => {
+                                        setSelected(row);
+                                        setOpenEditModal(true);
+                                      }}
+                                    />
+                                    <RiDeleteBin5Line
+                                      className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[red] transition-all duration-500"
+                                      onClick={() => {
+                                        setSelected(row);
+                                        setOpenDeleteModal(true);
+                                      }}
+                                    />
+                                  </div>
+                                ) : id === "date" ? (
+                                  moment(new Date(value * 1000)).format(
+                                    "DD/MM/YY"
+                                  )
+                                ) : (
+                                  value || "N/A"
+                                )}
+                                {/* {column.format && typeof value === "number" */}
+                                {/* ? column.format(value) */}
+                                {/* : value} */}
+                              </TableCell>
+                            );
+                          })}
                       </TableRow>
                     );
                   })}

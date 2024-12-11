@@ -16,6 +16,7 @@ import ExpenseSlice from "./Slices/ExpenseSlice";
 import RMStatsSlice from "./Slices/RMStatsSlice";
 import ReturnSlice from "./Slices/ReturnSlice";
 import AccountSlice from "./Slices/AccountSlice";
+import ArticleStatSlice from "./Slices/ArticleStatsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -36,5 +37,6 @@ export const store = configureStore({
     RMStatsState: RMStatsSlice,
     ReturnState: ReturnSlice,
     AccountState: AccountSlice,
+    ArticleStatsState: ArticleStatSlice,
   },
 });

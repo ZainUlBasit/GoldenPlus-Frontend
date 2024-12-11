@@ -57,6 +57,7 @@ export const CustomerItemLedgerColumns = [
     web4: "35px",
   },
 ];
+
 export const CashSummaryColumns = [
   {
     id: "account_name",
