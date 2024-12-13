@@ -137,8 +137,6 @@ export default function SimpleTable({
                           )
                           .map(({ id }, key) => {
                             const value = row[id];
-                            console.log(row.color);
-
                             return (
                               <TableCell
                                 id={row._id}
@@ -151,41 +149,30 @@ export default function SimpleTable({
                                   fontSize: "0.95rem",
                                 }}
                               >
-                                <div
-                                  className={`${
-                                    (id === "cr" || id === "dr") &&
-                                    row.type === 1
-                                      ? "text-[green]"
-                                      : (id === "cr" || id === "dr") &&
-                                        row.type === 2 &&
-                                        "text-[red]"
-                                  }`}
-                                >
-                                  {id === "actions" ? (
-                                    <div className="flex justify-center items-center gap-x-2">
-                                      <BiEdit
-                                        className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
-                                        onClick={() => {
-                                          setSelected(row);
-                                          setOpenEditModal(true);
-                                        }}
-                                      />
-                                      <RiDeleteBin5Line
-                                        className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[red] transition-all duration-500"
-                                        onClick={() => {
-                                          setSelected(row);
-                                          setOpenDeleteModal(true);
-                                        }}
-                                      />
-                                    </div>
-                                  ) : id === "date" ? (
-                                    moment(new Date(value * 1000)).format(
-                                      "DD/MM/YY"
-                                    )
-                                  ) : (
-                                    value || "N/A"
-                                  )}
-                                </div>
+                                {id === "actions" ? (
+                                  <div className="flex justify-center items-center gap-x-2">
+                                    <BiEdit
+                                      className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
+                                      onClick={() => {
+                                        setSelected(row);
+                                        setOpenEditModal(true);
+                                      }}
+                                    />
+                                    <RiDeleteBin5Line
+                                      className="text-[1.5rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[red] transition-all duration-500"
+                                      onClick={() => {
+                                        setSelected(row);
+                                        setOpenDeleteModal(true);
+                                      }}
+                                    />
+                                  </div>
+                                ) : id === "date" ? (
+                                  moment(new Date(value * 1000)).format(
+                                    "DD/MM/YY"
+                                  )
+                                ) : (
+                                  value || "N/A"
+                                )}
                                 {/* {column.format && typeof value === "number" */}
                                 {/* ? column.format(value) */}
                                 {/* : value} */}

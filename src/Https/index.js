@@ -82,6 +82,9 @@ export const UpdateCustomerApi = (payload) =>
 export const UpdateCustomerOpeningBalanceApi = (payload) =>
   api.patch("/customer/update-opening-balance", payload);
 
+export const GetBranchCustomerLedgerApi = (id) =>
+  api.get("/branch/complete-ledger/" + id);
+
 export const GetCustomerApi = () => api.get("/customer");
 export const GetBillNoApi = (id) => api.get("/customer/get-bill-nos/" + id);
 

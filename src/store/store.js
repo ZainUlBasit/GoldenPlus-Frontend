@@ -10,6 +10,7 @@ import CompanyInfoStatSlice from "./Slices/CompanyInfoStatSlice";
 import TopTenStatSlice from "./Slices/TopTenStatSlice";
 import AccountsStatSlice from "./Slices/AccountsStatSlice";
 import CustomerItemLegderSlice from "./Slices/CustomerItemLegderSlice";
+import CustomerLegderSlice from "./Slices/CustomerLegderSlice";
 import ArticleSlice from "./Slices/ArticleSlice";
 import BranchSlice from "./Slices/BranchSlice";
 import ExpenseSlice from "./Slices/ExpenseSlice";
@@ -31,6 +32,7 @@ export const store = configureStore({
     TopTenState: TopTenStatSlice,
     AccountsState: AccountsStatSlice,
     CustomerItemLegderState: CustomerItemLegderSlice,
+    CustomerLegderState: CustomerLegderSlice,
     ArticleState: ArticleSlice,
     BranchState: BranchSlice,
     ExpenseState: ExpenseSlice,

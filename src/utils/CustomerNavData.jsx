@@ -37,6 +37,12 @@ const CustomerNavData = [
     icon: BiSolidReport,
   },
   {
+    title: "Complete Ledger",
+    type: "link",
+    link: "/customer/complete-ledger",
+    icon: BiSolidReport,
+  },
+  {
     title: "Invoice Edit",
     type: "link",
     link: "/customer/edit-invoice",
