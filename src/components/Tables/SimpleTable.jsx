@@ -182,6 +182,14 @@ export default function SimpleTable({
                                     moment(new Date(value * 1000)).format(
                                       "DD/MM/YY"
                                     )
+                                  ) : (id === "cr" ||
+                                      id === "dr" ||
+                                      id === "bal") &&
+                                    value !== 0 ? (
+                                    new Intl.NumberFormat("en-PK", {
+                                      style: "currency",
+                                      currency: "PKR",
+                                    }).format(value)
                                   ) : (
                                     value || "N/A"
                                   )}
