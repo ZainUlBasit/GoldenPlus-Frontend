@@ -125,10 +125,13 @@ export default function TableComp({
                       <div
                         className={`maxWeb1:text-[1.5rem] maxWeb2:text-[1.8rem] maxWeb3:text-[2rem] maxWeb4:text-[2.2rem] text-[1rem] text-center`}
                       >
-                        {column.format &&
-                        typeof Data[column.id] === "number" &&
-                        column.id !== "date"
-                          ? column.format(Data[column.id])
+                        {column.id === "total" ||
+                        column.id === "paid" ||
+                        column.id === "remaining"
+                          ? new Intl.NumberFormat("en-PK", {
+                              style: "currency",
+                              currency: "PKR",
+                            }).format(Data[column.id])
                           : column.id === "date"
                           ? moment(new Date(Data[column.id] * 1000)).format(
                               "DD/MM/YY"

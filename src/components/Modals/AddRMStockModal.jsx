@@ -204,6 +204,7 @@ const AddRMStockModal = ({ OpenModal, setOpenModal }) => {
                 overflow: "hidden",
                 borderRadius: "25px",
                 maxHeight: "30vh",
+                overflowY: "auto",
               }}
             >
               <div className="bg-[#465462] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">
