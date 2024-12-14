@@ -34,6 +34,7 @@ import CompanyReport from "./components/Invoices/CompanyReport";
 import FixedAssets from "./pages/Cash Payments/FixedAssets";
 import ItemStats from "./pages/Reports/ItemStats";
 import CompleteLedger from "./pages/Customers/CompleteLedger";
+import SupplierCompleteLedger from "./pages/Company/SupplierCompleteLedger";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CompanyLedger />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/supplier/complete-ledger",
+    element: (
+      <ProtectedRoute>
+        <SupplierCompleteLedger />
       </ProtectedRoute>
     ),
   },

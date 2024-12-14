@@ -15,7 +15,7 @@ const CustomInput = ({
   disabled,
 }) => {
   return (
-    <div className="relative w-[300px] maxInputWidth font-[Quicksand] h-[48px]">
+    <div className="relative w-[300px] maxInputWidth font-[Quicksand] h-[48px] max480:!w-[100%]">
       <p className="absolute top-[-11px] left-3 w-fit bg-white h-[13px] text-[15px] font-bold InputLabel">
         {label}
       </p>

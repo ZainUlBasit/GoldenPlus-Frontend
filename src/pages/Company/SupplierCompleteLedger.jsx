@@ -1,60 +1,38 @@
-// import { BillItemColumns } from "@/assets/Columns/BillItemColumns";
-// import { CashLedgerColumns } from "@/assets/Columns/CashLedgerColumns";
-// import { ItemLedgerColumns } from "@/assets/Columns/ItemLedgerColumns";
-// import ItemLedgerCard from "@/components/Cards/ItemLedgerCard";
-// import CustomInput from "@/components/Inputs/CustomInput";
-// import CustomPopOver from "@/components/Inputs/CustomPopOver";
-// import ProcessLoader from "@/components/Loader/ProcessLoader";
-// import SimpleTable from "@/components/Tables/SimpleTable";
-// import { ErrorToast, SuccessToast, WarningToast } from "@/utils/ShowToast";
-// import { fetchCompanies } from "@/utils/Slices/CompanySlice";
-// import { fetchCustomers } from "@/utils/Slices/CustomerSlice";
-// import { fetchItems } from "@/utils/Slices/ItemSlice";
-// import { fetchPaymentById } from "@/utils/Slices/PaymentSlice";
 import { Popover, Typography } from "@mui/material";
-import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "../../store/Slices/CustomerSlice";
-import { fetchItems } from "../../store/Slices/ItemSlice";
-import { fetchArticles } from "../../store/Slices/ArticleSlice";
 import CustomPopOver from "../../components/Inputs/CustomPopOver";
 import Navbar from "../../components/Navbar/Navbar";
 import CustomerNav from "../../components/Navigations/CustomerNav";
-import CustomInput from "../../components/Inputs/CustomInput";
-import { GetBranchCustomerLedgerApi } from "../../Https";
-import { ErrorToast, SuccessToast, WarningToast } from "../../utils/ShowToast";
 import SimpleTable from "../../components/Tables/SimpleTable";
-import { BillItemColumns } from "../../utils/ColumnsData/BillItemColumns";
-import ProcessLoader from "../../components/Loader/ProcessLoader";
-import AddingLoader from "../../components/Loaders/AddingLoader";
 import { useNavigate } from "react-router-dom";
-import DeleteModal from "../../components/Modals/DeleteModal";
 import SearchBox from "../../components/SearhBox/SearchBox";
-import { CashLedgerColumns } from "../../utils/ColumnsData/CashLedgerColumns";
 import { CompleteLedgerColumns } from "../../utils/ColumnsData/CompleteLedgerColumns";
 import { fetchCustomerLedger } from "../../store/Slices/CustomerLegderSlice";
 import DataLoader from "../../components/Loaders/DataLoader";
+import { fetchCompanies } from "../../store/Slices/CompanySlice";
+import { fetchSupplierLedger } from "../../store/Slices/SupplierLegderSlice";
 
-export default function CompleteLedger() {
-  const [CurrentCustomer, setCurrentCustomer] = useState("");
+export default function SupplierCompleteLedger() {
+  const [CurrentSupplier, setCurrentSupplier] = useState("");
   const [CurrentInvoiceData, setCurrentInvoiceData] = useState("");
   const dispatch = useDispatch();
   const [Loading, setLoading] = useState(false);
   const AuthState = useSelector((state) => state.AuthState);
   const navigate = useNavigate();
 
-  const CustomerState = useSelector((state) => state.CustomerState);
+  const CompanyState = useSelector((state) => state.CompanyState);
   useEffect(() => {
     dispatch(
-      fetchCustomers({
+      fetchCompanies({
         branch:
           AuthState.data.role === 2
             ? AuthState.data.branchId.branch_number
             : -1,
       })
     );
-  }, [dispatch]);
+  }, []);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -68,19 +46,19 @@ export default function CompleteLedger() {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleCustomerSelect = (customer) => {
-    setCurrentCustomer(customer);
+  const handleSupplierSelect = (customer) => {
+    setCurrentSupplier(customer);
     handleClose();
   };
 
   const [FetchingLoading, setFetchingLoading] = useState(false);
-  const LedgerData = useSelector((state) => state.CustomerLegderState);
+  const LedgerData = useSelector((state) => state.SupplierLegderState);
 
   useEffect(() => {
-    if (CurrentCustomer) {
-      dispatch(fetchCustomerLedger(CurrentCustomer._id));
+    if (CurrentSupplier) {
+      dispatch(fetchSupplierLedger(CurrentSupplier._id));
     }
-  }, [CurrentCustomer]);
+  }, [CurrentSupplier]);
 
   const [SearchText, setSearchText] = useState("");
 
@@ -90,12 +68,12 @@ export default function CompleteLedger() {
       <CustomerNav />
       <div className="flex gap-x-2 flex-wrap pt-4">
         <CustomPopOver
-          label={"Select Customer"}
-          placeholder={"Select Customer"}
+          label={"Select Supplier"}
+          placeholder={"Select Supplier"}
           required={false}
           Value={
-            CustomerState.data.find((dt) => dt._id === CurrentCustomer._id)
-              ?.name || "Select Customer"
+            CompanyState.data.find((dt) => dt._id === CurrentSupplier._id)
+              ?.name || "Select Supplier"
           }
           onClick={handleClick}
         />
@@ -138,9 +116,9 @@ export default function CompleteLedger() {
                 <SearchBox
                   Value={SearchText}
                   SetValue={setSearchText}
-                  Placeholder={"Search Customer"}
+                  Placeholder={"Search Supplier"}
                 />
-                {CustomerState.data
+                {CompanyState.data
                   .filter((dt) => {
                     const lowerCaseSearch = SearchText.toLowerCase();
                     const lowerCaseStation = dt.name.toLowerCase();
@@ -154,12 +132,12 @@ export default function CompleteLedger() {
                     <div
                       key={dt._id}
                       className="flex gap-x-3 items-center cursor-pointer"
-                      onClick={() => handleCustomerSelect(dt)}
+                      onClick={() => handleSupplierSelect(dt)}
                     >
                       <input
                         type="checkbox"
                         className="mr-1 appearance-none h-5 w-5 border border-gray-300 checked:bg-white rounded-full"
-                        checked={CurrentCustomer._id === dt._id}
+                        checked={CurrentSupplier._id === dt._id}
                         readOnly
                       />
                       <span>{dt.name}</span>
@@ -170,16 +148,16 @@ export default function CompleteLedger() {
           </Typography>
         </Popover>
       </div>
-      {LedgerData.loading && CurrentCustomer && (
+      {LedgerData.loading && CurrentSupplier && (
         <div className="flex justify-center items-center pt-4">
           <DataLoader />
         </div>
       )}
-      {!LedgerData.loading && CurrentCustomer && (
+      {!LedgerData.loading && CurrentSupplier && (
         <div className="w-[85%] border-2 rounded-xl overflow-hidden">
           <div className="flex flex-col">
             <div className="bg-black text-white px-3 py-1 font-alegreya text-[1.2rem] font-bold rounded-b-xl">
-              Customer Name
+              Supplier Name
             </div>
             <div className="font-alegreya font-bold text-[1.1rem] px-4 py-1">
               {LedgerData.data.customer.name}
@@ -209,11 +187,11 @@ export default function CompleteLedger() {
           </div>
         </div>
       )}
-      {!LedgerData.loading && CurrentCustomer && (
+      {!LedgerData.loading && CurrentSupplier && (
         <div className="flex justify-center items-center pt-4 w-[90%]">
           <SimpleTable
             columns={CompleteLedgerColumns}
-            title={"Customer Ledger"}
+            title={"Supplier Ledger"}
             rows={LedgerData.data.ledger}
             ReportTable={true}
           />

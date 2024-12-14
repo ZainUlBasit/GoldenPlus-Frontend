@@ -50,7 +50,7 @@ const NavBtn = ({ title, onClick, Icon }) => {
             className="svg-wrapper group-hover:text-black"
             style={{ transform: "rotate(-15deg)", color: "white" }}
           >
-            <Icon className="text-black" />
+            <Icon className="text-black svg-icon" id="svg-icon" />
           </div>
         </div>
         <span>{title}</span>
@@ -61,8 +61,8 @@ const NavBtn = ({ title, onClick, Icon }) => {
 
 const StyledWrapper = styled.div`
   button {
-    font-family: inherit;
-    font-size: 18px;
+    font-family: "Alegreya Sans SC", "sans-serif";
+    /* font-size: 18px; */
     background: linear-gradient(to bottom, #000 0%, #333 100%);
     color: white;
     padding: 0.8em 1.2em;
@@ -117,6 +117,21 @@ const StyledWrapper = styled.div`
   button:hover svg {
     transform: rotate(15deg);
     color: black !important;
+  }
+
+  @media (max-width: 500px) {
+    button {
+      font-size: 0.8rem;
+      padding: 0.8em 1.5em 0.8em 1.2em;
+    }
+    button .svg-wrapper {
+      width: 25px;
+      height: 25px;
+    }
+    button svg {
+      width: 13px;
+      height: 13px;
+    }
   }
 `;
 

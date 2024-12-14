@@ -4,7 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 const CustomPopOver = ({ label, placeholder, Value, onClick }) => {
   return (
     <div
-      className="relative w-[300px] font-[Quicksand]  h-[48px]"
+      className="relative w-[300px] font-[Quicksand] h-[48px] max750:w-full"
       onClick={onClick}
     >
       <p className="absolute top-[-11px] left-3 w-fit bg-white font-[Quicksand] text-[15px] font-bold">

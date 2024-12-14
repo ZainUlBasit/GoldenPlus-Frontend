@@ -85,6 +85,9 @@ export const UpdateCustomerOpeningBalanceApi = (payload) =>
 export const GetBranchCustomerLedgerApi = (id) =>
   api.get("/branch/complete-ledger/" + id);
 
+export const GetBranchSupplierLedgerApi = (id) =>
+  api.get("/branch/supplier-complete-ledger/" + id);
+
 export const GetCustomerApi = () => api.get("/customer");
 export const GetBillNoApi = (id) => api.get("/customer/get-bill-nos/" + id);
 

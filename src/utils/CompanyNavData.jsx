@@ -34,6 +34,12 @@ const CompanyNavData = [
     icon: FaClipboardList,
   },
   {
+    title: "Complete Ledger",
+    type: "link",
+    link: "/supplier/complete-ledger",
+    icon: BiSolidReport,
+  },
+  {
     title: "Add Raw Material",
     type: "modal",
     link: "/",
