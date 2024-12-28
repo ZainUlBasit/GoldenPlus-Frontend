@@ -5,10 +5,12 @@ import ReportCard from "../../components/Cards/ReportCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExpenses } from "../../store/Slices/ExpenseSlice";
 import moment from "moment";
-import { ErrorToast } from "../../utils/ShowToast";
+import { ErrorToast, SuccessToast } from "../../utils/ShowToast";
 import SearchableTable from "../../components/Tables/SearchableTable";
 import { ExpenseColumns } from "../../utils/ColumnsData/ExpenseColumns";
 import EditExpenseModal from "../../components/Modals/EditExpenseModal";
+import DeleteModal from "../../components/Modals/DeleteModal";
+import { DeleteExpensesApi } from "../../Https";
 
 const ReportInfo = () => {
   const [OpenExpenseReport, setOpenExpenseReport] = useState(false);
@@ -79,6 +81,36 @@ const ReportInfo = () => {
                 fromDate: fromDate,
                 toDate: toDate,
               }}
+            />
+          )}
+          {OpenDeleteModal && (
+            <DeleteModal
+              Open={OpenDeleteModal}
+              setOpen={setOpenDeleteModal}
+              onSubmit={async () => {
+                setLoading(true);
+                try {
+                  const response = await DeleteExpensesApi(Selected._id);
+                  if (response.data.success) {
+                    SuccessToast(response.data.data.msg);
+                    setOpenDeleteModal(false);
+                    dispatch(
+                      fetchExpenses({
+                        branch:
+                          AuthState.data.role === 2
+                            ? AuthState.data.branchId.branch_number
+                            : -1,
+                        fromDate: fromDate,
+                        toDate: toDate,
+                      })
+                    );
+                  }
+                } catch (err) {
+                  console.log(err);
+                }
+                setLoading(false);
+              }}
+              Loading={Loading}
             />
           )}
         </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SetAuth, SetAuthNotFound } from "./store/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
 import PageLoader from "./components/Loader/PageLoader";
+import DataLoader from "./components/Loaders/DataLoader";
 
 const LoadingWrapper = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -22,7 +23,7 @@ const LoadingWrapper = ({ children }) => {
   }, []);
   return Loading ? (
     <div className="flex justify-center items-center h-screen w-screen">
-      <PageLoader />
+      <DataLoader />
     </div>
   ) : (
     <div className="fade-in">{children}</div>

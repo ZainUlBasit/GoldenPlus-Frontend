@@ -35,6 +35,7 @@ import { CashLedgerColumns } from "../../utils/ColumnsData/CashLedgerColumns";
 import { CompleteLedgerColumns } from "../../utils/ColumnsData/CompleteLedgerColumns";
 import { fetchCustomerLedger } from "../../store/Slices/CustomerLegderSlice";
 import DataLoader from "../../components/Loaders/DataLoader";
+import exportToExcel from "../../utils/ExportToExcel";
 
 export default function CompleteLedger() {
   const [CurrentCustomer, setCurrentCustomer] = useState("");
@@ -210,14 +211,34 @@ export default function CompleteLedger() {
         </div>
       )}
       {!LedgerData.loading && CurrentCustomer && (
-        <div className="flex justify-center items-center pt-4 w-[90%]">
-          <SimpleTable
-            columns={CompleteLedgerColumns}
-            title={"Customer Ledger"}
-            rows={LedgerData.data.ledger}
-            ReportTable={true}
-          />
-        </div>
+        <>
+          <div className="w-full flex justify-end px-2 py-3">
+            <div
+              className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+              onClick={() => {
+                exportToExcel(
+                  LedgerData.data.ledger.map((dt) => {
+                    return {
+                      date: moment(new Date(dt.date * 1000)).format("DD/MM/YY"),
+                      ...dt,
+                    };
+                  }),
+                  "Customer Ledger"
+                );
+              }}
+            >
+              Convert to Excel
+            </div>
+          </div>
+          <div className="flex justify-center items-center pt-4 w-[90%]">
+            <SimpleTable
+              columns={CompleteLedgerColumns}
+              title={"Customer Ledger"}
+              rows={LedgerData.data.ledger}
+              ReportTable={true}
+            />
+          </div>
+        </>
       )}
     </div>
   );

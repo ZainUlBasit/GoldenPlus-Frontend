@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyItemLedgerApi, GetTransactionByIdApi } from "../../Https";
+import { GetCompanyItemLedgerApi, GetTransactionsApi } from "../../Https";
 
 export const fetchCustomerItemLedger = createAsyncThunk(
   "fetch/customer/item-ledger",
   async (Payload) => {
     try {
-      const response = await GetTransactionByIdApi(Payload);
+      const response = await GetTransactionsApi(Payload);
       console.log(response.data);
       return response.data.data.payload;
     } catch (error) {

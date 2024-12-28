@@ -25,6 +25,9 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { LuArrowDownUp } from "react-icons/lu";
 import { CgArrowsExchangeAltV } from "react-icons/cg";
 import CustomInput from "../../components/Inputs/CustomInput";
+import DataLoader from "../../components/Loaders/DataLoader";
+import ItemLedgerTopTable from "../../components/Tables/ItemLedgerTopTable";
+import ItemLedgerBottomTable from "../../components/Tables/ItemLedgerBottomTable";
 
 export default function CustomerLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
@@ -310,7 +313,7 @@ export default function CustomerLedger() {
         setSelectUser={setCurrentCustomer}
         Placeholder={"Select Customer"}
       /> */}
-      <div className="w-full flex justify-end px-2 py-3">
+      <div className="w-full flex justify-end px-2 py-3 mb-6">
         {CurrentCustomer && (
           <div
             className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
@@ -337,10 +340,18 @@ export default function CustomerLedger() {
       </div>
       {OpenItemLedger &&
         (CustomerItemLegderState.loading ? (
-          <ProcessLoader />
+          <DataLoader />
         ) : (
-          <>
-            <SimpleTable
+          CustomerItemLegderState.data.map((item_data) => {
+            return (
+              <>
+                <div className="w-[98%] max-w-[1400px] maxWeb1:max-w-[1900px] maxWeb2:max-w-[2500px] maxWeb3:max-w-[3800px] maxWeb4:max-w-[3400px] border-[1px] border-[#465462] shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px] mb-10 relative">
+                  <div className="flex justify-between items-center text-white absolute -top-8 left-[-1px] w-[calc(100%+2px)] bg-[#465462] overflow-hidden rounded-t-md">
+                    <ItemLedgerTopTable Data={item_data} />
+                  </div>
+                  <ItemLedgerBottomTable Data={item_data} />
+                </div>
+                {/* <SimpleTable
               columns={CustomerItemLedgerColumns}
               title={"Item Ledger Details"}
               rows={CustomerItemLegderState.data}
@@ -360,12 +371,14 @@ export default function CustomerLedger() {
               >
                 Print Item Ledger
               </div>
-            </div>
-          </>
+            </div> */}
+              </>
+            );
+          })
         ))}
       {OpenCashLedger &&
         (PaymentState.loading ? (
-          <ProcessLoader />
+          <DataLoader />
         ) : (
           <SimpleTable
             columns={CashLedgerColumns}
@@ -413,7 +426,7 @@ export default function CustomerLedger() {
       )}
       {OpenReturnLedger &&
         (ReturnState.loading ? (
-          <ProcessLoader />
+          <DataLoader />
         ) : (
           <SimpleTable
             columns={CustomerItemLedgerColumns}

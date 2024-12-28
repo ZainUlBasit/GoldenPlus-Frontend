@@ -1,15 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  GetCompanyItemLedgerApi,
-  GetRMStockStatsApi,
-  GetStockStatsApi,
-} from "../../Https";
+import { GetCashSummaryApi } from "../../Https";
 
-export const fetchCompanyItemLedger = createAsyncThunk(
-  "fetch/Supplier/item-ledger",
-  async (Payload) => {
+export const fetchCashSummary = createAsyncThunk(
+  "fetch/Cash-Summary",
+  async (payload) => {
     try {
-      const response = await GetRMStockStatsApi(Payload);
+      const response = await GetCashSummaryApi(payload);
       console.log(response.data);
       return response.data.data.payload;
     } catch (error) {
@@ -19,8 +15,8 @@ export const fetchCompanyItemLedger = createAsyncThunk(
   }
 );
 
-const CompanyItemLegderSlice = createSlice({
-  name: "Supplier-Item-Ledger",
+const CashSummarySlice = createSlice({
+  name: "Cash-Summary",
   initialState: {
     loading: true,
     data: [],
@@ -28,15 +24,15 @@ const CompanyItemLegderSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCompanyItemLedger.pending, (state, action) => {
+    builder.addCase(fetchCashSummary.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(fetchCompanyItemLedger.fulfilled, (state, action) => {
+    builder.addCase(fetchCashSummary.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
       state.isError = false;
     });
-    builder.addCase(fetchCompanyItemLedger.rejected, (state, action) => {
+    builder.addCase(fetchCashSummary.rejected, (state, action) => {
       console.log("Error", action);
       // console.log("Error", action.payload);
       state.loading = false;
@@ -45,4 +41,4 @@ const CompanyItemLegderSlice = createSlice({
   },
 });
 
-export default CompanyItemLegderSlice.reducer;
+export default CashSummarySlice.reducer;

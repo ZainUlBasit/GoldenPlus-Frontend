@@ -57,6 +57,8 @@ export const UpdateItemQtyApi = (payload) => api.post("/stock/add", payload);
 export const EditStockStatsApi = (payload) => api.patch("/stock/edit", payload);
 export const DeleteStockStatsApi = (id) => api.delete("/stock/delete/" + id);
 export const GetStockStatsApi = (payload) => api.post("/stock/branch", payload);
+export const GetRMStockStatsApi = (payload) =>
+  api.post("/raw-material/branch/stats", payload);
 
 export const GetItemsByBranchApi = (payload) =>
   api.post("/item/branch", payload);
@@ -84,6 +86,8 @@ export const UpdateCustomerOpeningBalanceApi = (payload) =>
 
 export const GetBranchCustomerLedgerApi = (id) =>
   api.get("/branch/complete-ledger/" + id);
+export const GetCashSummaryApi = (payload) =>
+  api.post("/branch/cash-summary", payload);
 
 export const GetBranchSupplierLedgerApi = (id) =>
   api.get("/branch/supplier-complete-ledger/" + id);
@@ -105,7 +109,7 @@ export const GetPaymentsByIdApi = (payload) =>
   api.post("/payment/branch", payload);
 export const DeletePaymentAPI = (id) => api.delete("/payment/delete/" + id);
 export const UpdatePaymentAPI = (id, payload) =>
-  api.delete("/payment/update/" + id, payload);
+  api.patch("/payment/update/" + id, payload);
 
 // Transactions Request
 export const CheckInvoiceNoApi = (payload) =>
@@ -116,8 +120,11 @@ export const GetInvoiceDataApi = (payload) =>
   api.post("/transaction/get-invoice-item", payload);
 export const CreateTransactionApi = (payload) =>
   api.post("/transaction/create", payload);
-export const GetTransactionByIdApi = (payload) =>
+export const DeleteTransactionItemApi = (payload) =>
+  api.post("/transaction/delete-invoice-item", payload);
+export const GetTransactionsApi = (payload) =>
   api.post("/transaction/all", payload);
+export const GetTransactionByIdApi = (id) => api.get("/transaction/" + id);
 export const DeleteInvoiceApi = (payload) =>
   api.post("/transaction/delete", payload);
 
@@ -150,6 +157,7 @@ export const CreateExpensesApi = (payload) =>
   api.post("/report/create", payload);
 export const UpdateExpensesApi = (payload) =>
   api.patch("/report/update", payload);
+export const DeleteExpensesApi = (id) => api.delete("/report/delete/" + id);
 
 // Accounts
 export const CreateAccountApi = (payload) =>

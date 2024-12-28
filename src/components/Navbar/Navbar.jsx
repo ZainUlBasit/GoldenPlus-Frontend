@@ -66,11 +66,11 @@ const Navbar = () => {
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
               >
-                <BsFillMenuButtonWideFill className="hover:text-gray-300 text-white transition-all ease-in-out duration-700" />
+                <BsFillMenuButtonWideFill className="hover:text-gray-300 text-white transition-all ease-in-out duration-700 max300:text-xl" />
               </IconButton>
             </div>
             <div className="flex items-center">
-              <div className="font-bold text-2xl font-mono ml-2 border-2 border-white border-x-0 rounded-lg py-2 px-2">
+              <div className="font-bold text-2xl ml-2 border-2 border-white border-x-0 rounded-lg py-2 px-2 font-alegreya max300:text-xl max220:text-[1rem]">
                 {AuthState.data.role === 2
                   ? AuthState.data.branchId.name
                   : "Admin Panel"}
@@ -86,14 +86,14 @@ const Navbar = () => {
           <div className="flex items-center justify-center gap-x-3">
             {AuthState.data.role === 1 && (
               <MdFactory
-                className="hover:text-gray-400 text-white transition-all ease-in-out duration-700 cursor-pointer text-3xl"
+                className="hover:text-gray-400 text-white transition-all ease-in-out duration-700 cursor-pointer text-3xl max300:text-2xl"
                 onClick={() => {
                   navigate("/branches");
                 }}
               />
             )}
             <IoExit
-              className="hover:text-gray-400 text-white transition-all ease-in-out duration-700 cursor-pointer text-3xl"
+              className="hover:text-gray-400 text-white transition-all ease-in-out duration-700 cursor-pointer text-3xl max300:text-2xl"
               onClick={toggleModal}
             />
           </div>
@@ -105,12 +105,12 @@ const Navbar = () => {
         onClose={toggleDrawer(false)}
         classes={{ paper: "fade-in" }}
       >
-        <div className="w-auto min-w-[300px] bg-[black] h-full overflow-y-auto">
+        <div className="w-auto min-w-[300px] bg-[black] h-full overflow-y-auto max400:min-w-[90%]">
           <div className="flex justify-center py-10 pb-5 px-4">
             <img
               src={Logo2}
               alt="Logo"
-              className="w-[200px] cursor-pointer"
+              className="w-[200px] cursor-pointer max400:w-[100px]"
               onClick={() => navigate("/home")}
             />
           </div>
@@ -123,7 +123,7 @@ const Navbar = () => {
                   onClick={() => handleNavigation(item.path)}
                 >
                   <ListItemText>
-                    <div className="text-white flex items-center justify-start cursor-pointer bg-[#464F51] px-4 py-3 text-xl font-bold hover:rounded-lg hover:bg-[white] hover:text-[#464F51] transition-all ease-in-out duration-700">
+                    <div className="text-white flex items-center justify-start cursor-pointer bg-[#464F51] px-4 py-2 text-xl font-bold hover:rounded-lg hover:bg-[white] hover:text-[#464F51] transition-all ease-in-out duration-700 max400:text-[1rem]">
                       <item.icon className="text-xl mr-2" />
                       {item.text}
                     </div>

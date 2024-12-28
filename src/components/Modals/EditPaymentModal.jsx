@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomPopOver from "../Inputs/CustomPopOver";
 import CustomInput from "../Inputs/CustomInput";
 // import { BankNameData } from "@/utils/BankNameData";
-import { CreatePaymentApi } from "../../Https";
+import { CreatePaymentApi, UpdatePaymentAPI } from "../../Https";
 import { ErrorToast, SuccessToast } from "../../utils/ShowToast";
 import { BankNameData } from "../../utils/BankNameData";
 import { fetchCustomers } from "../../store/Slices/CustomerSlice";
@@ -53,24 +53,27 @@ const EditPaymentModal = ({ OpenModal, setOpenModal, paymentData }) => {
       )
         ErrorToast("Required fields are undefined!");
       else {
-        let paymentData = {
+        let newPaymentData = {
           user_type: userType,
           user_Id: userId,
           user_name: userName,
           depositor,
           payment_type: paymentType,
           amount: Number(amount),
-          date,
+          date: Math.floor(new Date(date) / 1000),
           desc,
           branch: 1,
         };
 
         if (paymentType === 2 || paymentType === 3) {
-          paymentData.bank_name = bankName;
-          paymentData.bank_number = bankNumber;
+          newPaymentData.bank_name = bankName;
+          newPaymentData.bank_number = Number(bankNumber);
         }
         try {
-          const response = await CreatePaymentApi(paymentData);
+          const response = await UpdatePaymentAPI(
+            paymentData._id,
+            newPaymentData
+          );
           if (response.data.success) {
             SuccessToast(response.data.data.msg);
             setOpenModal(false);

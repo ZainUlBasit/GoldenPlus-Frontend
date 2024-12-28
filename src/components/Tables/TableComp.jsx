@@ -95,7 +95,7 @@ export default function TableComp({
                       scope="row"
                       align="center"
                     >
-                      <div className="flex justify-center items-center gap-x-2">
+                      <div className="flex justify-center items-center gap-x-2 font-poppins">
                         <BiEdit
                           className="text-[1.2rem] maxWeb1:text-[2rem] maxWeb2:text-[2.5rem] maxWeb3:text-[3rem] maxWeb4:text-[3rem] cursor-pointer hover:text-[green] transition-all duration-500"
                           onClick={() => {
@@ -123,7 +123,7 @@ export default function TableComp({
                       align="center"
                     >
                       <div
-                        className={`maxWeb1:text-[1.5rem] maxWeb2:text-[1.8rem] maxWeb3:text-[2rem] maxWeb4:text-[2.2rem] text-[1rem] text-center`}
+                        className={`maxWeb1:text-[1.5rem] maxWeb2:text-[1.8rem] maxWeb3:text-[2rem] maxWeb4:text-[2.2rem] text-[1rem] text-center font-poppins`}
                       >
                         {column.id === "total" ||
                         column.id === "paid" ||

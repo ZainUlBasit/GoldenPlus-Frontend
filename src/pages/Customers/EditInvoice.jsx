@@ -331,6 +331,8 @@ export default function EditInvoice() {
               width: "400px",
               overflow: "hidden",
               borderRadius: "25px",
+              maxHeight: "60vh",
+              overflowY: "auto",
             }}
           >
             <div className="bg-[#000] text-white font-[Quicksand] flex flex-col justify-center items-center rounded-[50px]">

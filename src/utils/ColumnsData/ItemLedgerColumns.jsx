@@ -76,6 +76,14 @@ export const CashSummaryColumns = [
     web4: "35px",
   },
   {
+    id: "opening_balance",
+    title: "Opening Balance",
+    web1: "20px",
+    web2: "25px",
+    web3: "30px",
+    web4: "35px",
+  },
+  {
     id: "amount",
     title: "Amount",
     web1: "20px",

@@ -35,6 +35,8 @@ import FixedAssets from "./pages/Cash Payments/FixedAssets";
 import ItemStats from "./pages/Reports/ItemStats";
 import CompleteLedger from "./pages/Customers/CompleteLedger";
 import SupplierCompleteLedger from "./pages/Company/SupplierCompleteLedger";
+import EditItemLedgerItem from "./pages/Customers/EditItemLedgerItem";
+import AccountSummary from "./pages/Cash Payments/AccountSummary";
 
 const router = createBrowserRouter([
   {
@@ -98,6 +100,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CustomerLedger />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/customer/edit-ledger-item/:id",
+    element: (
+      <ProtectedRoute>
+        <EditItemLedgerItem />
       </ProtectedRoute>
     ),
   },
@@ -242,6 +252,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Summary />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/account-summary",
+    element: (
+      <ProtectedRoute>
+        <AccountSummary />
       </ProtectedRoute>
     ),
   },

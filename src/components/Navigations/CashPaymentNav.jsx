@@ -44,6 +44,16 @@ const CashPaymentNav = () => {
         }}
       />
       <NavBtn
+        title={"Summary Detail"}
+        Icon={RiSecurePaymentFill}
+        Type={"link"}
+        link={"/"}
+        Width={"w-[230px]"}
+        onClick={() => {
+          navigate("/account-summary");
+        }}
+      />
+      <NavBtn
         title={"Fixed Assets"}
         Icon={RiSecurePaymentFill}
         Type={"link"}

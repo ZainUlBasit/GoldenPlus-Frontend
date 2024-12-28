@@ -152,7 +152,7 @@ export default function SimpleTable({
                                 }}
                               >
                                 <div
-                                  className={`${
+                                  className={` ${
                                     (id === "cr" || id === "dr") &&
                                     row.type === 1
                                       ? "text-[green]"
