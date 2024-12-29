@@ -216,15 +216,7 @@ export default function CompleteLedger() {
             <div
               className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
               onClick={() => {
-                exportToExcel(
-                  LedgerData.data.ledger.map((dt) => {
-                    return {
-                      date: moment(new Date(dt.date * 1000)).format("DD/MM/YY"),
-                      ...dt,
-                    };
-                  }),
-                  "Customer Ledger"
-                );
+                exportToExcel(LedgerData.data.ledger, "Customer Ledger");
               }}
             >
               Convert to Excel
