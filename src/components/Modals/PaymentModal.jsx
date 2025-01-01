@@ -56,7 +56,7 @@ const PaymentModal = ({ OpenModal, setOpenModal }) => {
           amount: Number(amount),
           date,
           desc,
-          branch: 1,
+          branch: AuthState.data.branchId.branch_number,
         };
 
         if (paymentType === 2 || paymentType === 3) {

@@ -70,15 +70,16 @@ export default function ComapnyLedger() {
   }, []);
 
   useEffect(() => {
-    if (OpenCashLedger)
+    if (OpenCashLedger) {
       dispatch(
         fetchPaymentById({
-          branch: 1,
-          user_Id: CurrentCompany,
+          branch: AuthState.data.branchId.branch_number,
+          user_Id: CurrentCompany._id,
           startDate: fromDate,
           endDate: toDate,
         })
       );
+    }
   }, [OpenCashLedger, fromDate, toDate]);
   useEffect(() => {
     if (OpenItemLedger)

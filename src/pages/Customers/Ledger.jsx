@@ -96,7 +96,7 @@ export default function CustomerLedger() {
           user_Id: CurrentCustomer,
           startDate: FromNewDate,
           endDate: ToNewDate,
-          branch: 1,
+          branch: AuthState.data.branchId.branch_number,
         })
       );
     } else if (OpenItemLedger) {
