@@ -23,6 +23,8 @@ export default function TableComp({
   CurrentData,
   Columns,
 }) {
+  console.log(CurrentData);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [OpenModal, setOpenModal] = useState(false);

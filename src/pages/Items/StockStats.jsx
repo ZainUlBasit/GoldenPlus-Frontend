@@ -14,6 +14,7 @@ import BasicDatePicker from "../../components/DatePicker/DatePicker";
 import dayjs from "dayjs";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import ToggleBtn from "../../components/Buttons/ToggleBtn";
+import { fetchStockStats } from "../../store/Slices/StockStatsSlice";
 
 const StockStats = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
@@ -27,19 +28,15 @@ const StockStats = () => {
   const [FromDate, setFromDate] = useState(dayjs());
   const [ToDate, setToDate] = useState(dayjs());
 
-  const CompanyItemLegderState = useSelector(
-    (state) => state.CompanyItemLegderState
-  );
+  const StockStatsState = useSelector((state) => state.StockStatsState);
   const AuthState = useSelector((state) => state.AuthState);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
-      fetchCompanyItemLedger({
+      fetchStockStats({
         branchId: AuthState.data.role === 2 ? AuthState.data.branchId._id : "",
-        startDate: 0,
-        endDate: Math.floor(new Date() / 1000),
       })
     );
   }, []);
@@ -71,7 +68,7 @@ const StockStats = () => {
           className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
           onClick={() => {
             exportToExcel(
-              CompanyItemLegderState.data.filter((dt) =>
+              StockStatsState.data.filter((dt) =>
                 SearchText === ""
                   ? true
                   : Number(SearchText) === Number(dt.article_name)
@@ -92,8 +89,8 @@ const StockStats = () => {
           SearchText={SearchText}
           setSearchText={setSearchText}
           CurrentData={
-            CompanyItemLegderState.data &&
-            CompanyItemLegderState.data
+            StockStatsState.data &&
+            StockStatsState.data
               .filter((dt) => {
                 if (ActiveDateFilter) {
                   return (
