@@ -15,8 +15,6 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
   const [formData, setFormData] = useState({
     desc: "",
     expense: "",
-    // branch: "",
-    account: "",
     accountId: "",
     date: "",
   });
@@ -44,8 +42,8 @@ const CreateExpenseModal = ({ OpenModal, setOpenModal }) => {
 
     try {
       const response = await CreateExpensesApi({
-        account: AccountState.data.find((dt) => dt._id === formData.accountId)
-          ?.account_name,
+        accountId: AccountState.data.find((dt) => dt._id === formData.accountId)
+          ?._id,
         ...formData,
         branch:
           AuthState.data.role === 2

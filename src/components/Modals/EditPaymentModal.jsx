@@ -62,7 +62,7 @@ const EditPaymentModal = ({ OpenModal, setOpenModal, paymentData }) => {
           amount: Number(amount),
           date: Math.floor(new Date(date) / 1000),
           desc,
-          branch: 1,
+          branch: AuthState.data.branchId.branch_number,
         };
 
         if (paymentType === 2 || paymentType === 3) {

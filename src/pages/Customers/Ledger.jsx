@@ -28,11 +28,14 @@ import CustomInput from "../../components/Inputs/CustomInput";
 import DataLoader from "../../components/Loaders/DataLoader";
 import ItemLedgerTopTable from "../../components/Tables/ItemLedgerTopTable";
 import ItemLedgerBottomTable from "../../components/Tables/ItemLedgerBottomTable";
+import CashLedgerTopTable from "../../components/Tables/CashLedgerTopTable";
+import CashLedgerBottomTable from "../../components/Tables/CashLedgerBottomTable";
 
 export default function CustomerLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
   const [OpenCashLedger, setOpenCashLedger] = useState(false);
   const [OpenReturnLedger, setOpenReturnLedger] = useState(false);
+  const [OpenLedger, setOpenLedger] = useState(false);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [CurrentCustomer, setCurrentCustomer] = useState("");
@@ -44,7 +47,7 @@ export default function CustomerLedger() {
   const [Selected, setSelected] = useState("");
   const [Loading, setLoading] = useState(false);
 
-  const [CurrentTab, setCurrentTab] = useState("Item Ledger");
+  const [CurrentTab, setCurrentTab] = useState("All");
   const [SearchText, setSearchText] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -110,6 +113,22 @@ export default function CustomerLedger() {
     } else if (OpenReturnLedger) {
       dispatch(
         fetchReturnLedger({
+          customerId: CurrentCustomer,
+          from: FromNewDate,
+          to: ToNewDate,
+        })
+      );
+    } else if (OpenLedger) {
+      dispatch(
+        fetchPaymentById({
+          user_Id: CurrentCustomer,
+          startDate: FromNewDate,
+          endDate: ToNewDate,
+          branch: AuthState.data.branchId.branch_number,
+        })
+      );
+      dispatch(
+        fetchCustomerItemLedger({
           customerId: CurrentCustomer,
           from: FromNewDate,
           to: ToNewDate,
@@ -199,9 +218,10 @@ export default function CustomerLedger() {
                         className="flex gap-x-3 items-center cursor-pointer"
                         onClick={() => {
                           setOpenCashLedger(false);
-                          setOpenItemLedger(true);
+                          setOpenItemLedger(false);
                           setOpenReturnLedger(false);
-                          setCurrentTab("Item Ledger");
+                          setOpenLedger(true);
+                          setCurrentTab("All");
                           handleCustomerSelect(dt);
                         }}
                       >
@@ -254,6 +274,22 @@ export default function CustomerLedger() {
           <div className="w-[90%] flex justify-center items-center bg-[#EFE7EC] rounded-[40px] font-[700] text-[1.5rem] mt-5 mb-8 max300:w-[95%]">
             <div
               className={`w-[50%] flex justify-center items-center rounded-[40px] ${
+                CurrentTab === "All"
+                  ? "bg-[#000] text-white"
+                  : "bg-[#EFE7EC] text-[#000]"
+              } py-3 transition-all ease-in-out duration-700 cursor-pointer max767:py-2 max480:text-[1.1rem] max300:text-[.8rem]`}
+              onClick={() => {
+                setOpenCashLedger(false);
+                setOpenItemLedger(false);
+                setOpenReturnLedger(false);
+                setOpenLedger(true);
+                setCurrentTab("All");
+              }}
+            >
+              All
+            </div>
+            <div
+              className={`w-[50%] flex justify-center items-center rounded-[40px] ${
                 CurrentTab === "Item Ledger"
                   ? "bg-[#000] text-white"
                   : "bg-[#EFE7EC] text-[#000]"
@@ -262,6 +298,7 @@ export default function CustomerLedger() {
                 setOpenCashLedger(false);
                 setOpenItemLedger(true);
                 setOpenReturnLedger(false);
+                setOpenLedger(false);
                 setCurrentTab("Item Ledger");
               }}
             >
@@ -277,6 +314,7 @@ export default function CustomerLedger() {
                 setOpenItemLedger(false);
                 setOpenCashLedger(true);
                 setOpenReturnLedger(false);
+                setOpenLedger(false);
                 setCurrentTab("Cash Ledger");
               }}
             >
@@ -292,6 +330,7 @@ export default function CustomerLedger() {
                 setOpenItemLedger(false);
                 setOpenCashLedger(false);
                 setOpenReturnLedger(true);
+                setOpenLedger(false);
                 setCurrentTab("Return Ledger");
               }}
             >
@@ -389,6 +428,34 @@ export default function CustomerLedger() {
             setOpenEditModal={setOpenEditModal}
           />
         ))}
+
+      {OpenLedger &&
+        !CustomerItemLegderState.loading &&
+        !PaymentState.loading && (
+          <div className="w-full flex flex-col justify-center items-center">
+            {CustomerItemLegderState.data
+              .map((item) => ({ ...item, source: 1 })) // Add field with value 1 for CustomerItemLedger
+              .concat(PaymentState.data.map((item) => ({ ...item, source: 2 }))) // Add field with value 2 for PaymentState
+              .sort((a, b) => new Date(a.date) - new Date(b.date)) // Assuming 'date' is the field to sort by
+              .map((item, index) =>
+                item.source === 1 ? (
+                  <div className="w-[98%] max-w-[1400px] maxWeb1:max-w-[1900px] maxWeb2:max-w-[2500px] maxWeb3:max-w-[3800px] maxWeb4:max-w-[3400px] border-[1px] border-[#465462] shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px] mb-10 relative">
+                    <div className="flex justify-between items-center text-white absolute -top-8 left-[-1px] w-[calc(100%+2px)] bg-[#465462] overflow-hidden rounded-t-md">
+                      <ItemLedgerTopTable Data={item} />
+                    </div>
+                    <ItemLedgerBottomTable Data={item} />
+                  </div>
+                ) : (
+                  <div className="w-[98%] max-w-[1400px] maxWeb1:max-w-[1900px] maxWeb2:max-w-[2500px] maxWeb3:max-w-[3800px] maxWeb4:max-w-[3400px] border-[1px] border-[#465462] shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px] mb-10 relative">
+                    <div className="flex justify-between items-center text-white absolute -top-8 left-[-1px] w-[calc(100%+2px)] bg-[#465462] overflow-hidden rounded-t-md">
+                      <CashLedgerTopTable Data={item} />
+                    </div>
+                    <CashLedgerBottomTable Data={item} />
+                  </div>
+                )
+              )}
+          </div>
+        )}
       {OpenEditModal && (
         <EditPaymentModal
           OpenModal={OpenEditModal}

@@ -8,7 +8,7 @@ import EditInvoiceTable from "../../components/Tables/EditInvoiceTable";
 import { InvoiceEditColumns } from "../../utils/ColumnsData/InvoiceEditColumns";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { SuccessToast } from "../../utils/ShowToast";
-import { DeleteTransactionItemApi } from "../../Https";
+import { DeleteTransactionItemApi, UpdateInvoiceNoApi } from "../../Https";
 import { fetchItems } from "../../store/Slices/ItemSlice";
 import { fetchArticles } from "../../store/Slices/ArticleSlice";
 import AddNewButton from "../../components/Buttons/AddNewBtn";
@@ -30,6 +30,36 @@ const EditItemLedgerItem = () => {
   const AuthState = useSelector((state) => state.AuthState);
   const ItemState = useSelector((state) => state.ItemState);
   const [AddNewBtn, setAddNewBtn] = useState(false);
+  const [ItemName, setItemName] = useState("");
+  const [ItemId, setItemId] = useState("");
+  const [CurrentItemQty, setCurrentItemQty] = useState("");
+
+  useEffect(() => {
+    if (ItemSize === "") {
+      setItemPrice("");
+      setItemName("");
+      setItemId("");
+    } else {
+      console.log(ItemArticle);
+      const currentItem = ItemState.data.find((dt) => {
+        console.log(dt.articleId.name);
+        return dt.size === ItemSize && dt.articleId.name === ItemArticle;
+      });
+      console.log(currentItem);
+      if (currentItem) {
+        console.log(currentItem);
+        setItemPrice(currentItem.sale);
+        setItemName(currentItem.name);
+        setItemId(currentItem._id);
+        setCurrentItemQty(currentItem.qty);
+      } else {
+        setItemPrice("");
+        setItemName("");
+        setItemId("");
+        setCurrentItemQty("");
+      }
+    }
+  }, [ItemSize]);
 
   useEffect(() => {
     dispatch(fetchTransactionDetail(id));
@@ -188,8 +218,39 @@ const EditItemLedgerItem = () => {
                 />
                 <button
                   className="bg-white text-gray-600 px-3 py-2 border-2 border-gray-600 hover:bg-gray-600 hover:text-white hover:rounded-lg transition-all ease-in-out duration-500 font-bold"
-                  onClick={() => {
-                    setAddNewBtn(false);
+                  onClick={async () => {
+                    try {
+                      const response = await UpdateInvoiceNoApi({
+                        transId: id,
+                        customerId: InvoiceDetailState.data.customerId._id,
+                        itemId: ItemId,
+                        article_name: ItemArticle,
+                        article_size: ItemSize,
+                        qty: Number(ItemQty),
+                        purchase: Number(
+                          ItemState.data.find(
+                            (dt) =>
+                              dt.size === ItemSize &&
+                              dt.articleId.name === ItemArticle
+                          ).purchase
+                        ),
+                        price: Number(ItemPrice),
+                        amount: Number(ItemTotal),
+                      });
+                      if (response.data.success) {
+                        SuccessToast(response.data.data.msg);
+                        setItemSize("");
+                        setItemArticle("");
+                        setItemId("");
+                        setItemQty("");
+                        setItemPrice("");
+                        setItemTotal("");
+                        setAddNewBtn(false);
+                        dispatch(fetchTransactionDetail(id));
+                      }
+                    } catch (err) {
+                      console.log(err);
+                    }
                   }}
                 >
                   Add

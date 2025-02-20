@@ -19,10 +19,18 @@ import SearchBox from "../../components/SearhBox/SearchBox";
 import CustomPopOver from "../../components/Inputs/CustomPopOver";
 import moment from "moment";
 import { Popover, Typography } from "@mui/material";
+import { SuccessToast } from "../../utils/ShowToast";
+import DeleteModal from "../../components/Modals/DeleteModal";
+import EditPaymentModal from "../../components/Modals/EditPaymentModal";
+import { DeletePaymentAPI } from "../../Https";
 
 export default function ComapnyLedger() {
   const [OpenItemLedger, setOpenItemLedger] = useState(false);
   const [OpenCashLedger, setOpenCashLedger] = useState(false);
+  const [OpenDeleteCashModal, setOpenDeleteCashModal] = useState(false);
+  const [OpenEditModal, setOpenEditModal] = useState(false);
+  const [Selected, setSelected] = useState("");
+  const [Loading, setLoading] = useState(false);
   // const [fromDate, setFromDate] = useState("");
   // const [toDate, setToDate] = useState("");
   const CompanyState = useSelector((state) => state.CompanyState);
@@ -286,8 +294,48 @@ export default function ComapnyLedger() {
             columns={CashLedgerColumns}
             title={"Cash Ledger Details"}
             rows={PaymentState.data}
+            setOpenDeleteModal={setOpenDeleteCashModal}
+            setSelected={setSelected}
+            setOpenEditModal={setOpenEditModal}
           />
         )
+      )}
+
+      {OpenEditModal && (
+        <EditPaymentModal
+          OpenModal={OpenEditModal}
+          setOpenModal={setOpenEditModal}
+          paymentData={Selected}
+        />
+      )}
+
+      {OpenDeleteCashModal && (
+        <DeleteModal
+          Open={OpenDeleteCashModal}
+          setOpen={setOpenDeleteCashModal}
+          onSubmit={async () => {
+            setLoading(true);
+            try {
+              const response = await DeletePaymentAPI(Selected._id);
+              if (response.data.success) {
+                SuccessToast(response.data.data.msg);
+                setOpenDeleteCashModal(false);
+                dispatch(
+                  fetchPaymentById({
+                    branch: AuthState.data.branchId.branch_number,
+                    user_Id: CurrentCompany._id,
+                    startDate: fromDate,
+                    endDate: toDate,
+                  })
+                );
+              }
+            } catch (err) {
+              console.log(err);
+            }
+            setLoading(false);
+          }}
+          Loading={Loading}
+        />
       )}
     </div>
   );

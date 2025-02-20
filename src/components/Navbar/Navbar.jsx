@@ -72,7 +72,7 @@ const Navbar = () => {
             <div className="flex items-center">
               <div className="font-bold text-2xl ml-2 border-2 border-white border-x-0 rounded-lg py-2 px-2 font-alegreya max300:text-xl max220:text-[1rem]">
                 {AuthState.data.role === 2
-                  ? AuthState.data.branchId.name
+                  ? AuthState?.data?.branchId?.name
                   : "Admin Panel"}
               </div>
               {/* <img
