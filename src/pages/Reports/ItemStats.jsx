@@ -23,6 +23,7 @@ import SimpleTable from "../../components/Tables/SimpleTable";
 import { CustomerItemLedgerColumns } from "../../utils/ColumnsData/ItemLedgerColumns";
 import DataLoader from "../../components/Loaders/DataLoader";
 import { ItemStatsColumns } from "../../utils/ColumnsData/ItemStatsColumns";
+import exportToExcel from "../../utils/ExportToExcel";
 
 const ItemStats = () => {
   const [ArticleId, setArticleId] = useState("");
@@ -83,7 +84,7 @@ const ItemStats = () => {
         <div className="flex justify-between items-end w-[97%] pt-5 gap-x-2 py-2">
           <div className="flex gap-x-2">
             <div className=" rounded-t-xl">
-              <div className="py-2 bg-black text-white font-poppins px-4 rounded-t-xl">
+              <div className="py-2 bg-black text-white font-poppins px-4 rounded-t-xl whitespace-nowrap">
                 Total Stock
               </div>
               <div className="border-2 border-gray-300 font-poppins text-xl font-bold text-center py-1">
@@ -93,7 +94,7 @@ const ItemStats = () => {
               </div>
             </div>
             <div className=" rounded-t-xl">
-              <div className="py-2 bg-black text-white font-poppins px-4 rounded-t-xl">
+              <div className="py-2 bg-black text-white font-poppins px-4 rounded-t-xl whitespace-nowrap">
                 Total Sold Stock
               </div>
               <div className="border-2 border-gray-300 font-poppins text-xl font-bold text-center py-1">
@@ -155,7 +156,13 @@ const ItemStats = () => {
                     style={{ maxHeight: "30vh", overflowY: "auto" }}
                   >
                     {ArticleState.data &&
-                      ArticleState.data
+                      [
+                        {
+                          _id: `all_${AuthState.data.branchId._id}`,
+                          name: "All",
+                        },
+                        ...ArticleState.data,
+                      ]
                         .filter((dt) => {
                           const lowerCaseSearch = SearchTextPop.toLowerCase();
                           const lowerCaseStation = dt.name.toLowerCase();
@@ -199,21 +206,48 @@ const ItemStats = () => {
       {ArticleStatsState.loading === false &&
         ArticleStatsState.data.StockStats &&
         ArticleId && (
-          <SimpleTable
-            columns={ItemStockStatsColumns}
-            title={"Article Stock Statistics"}
-            rows={ArticleStatsState.data.StockStats}
-            ReportTable={true}
-          />
+          <>
+            <div className="w-full flex justify-end px-2 py-3">
+              <div
+                className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+                onClick={() => {
+                  exportToExcel(
+                    ArticleStatsState.data.StockStats,
+                    "MyExcelFile"
+                  );
+                }}
+              >
+                Convert to Excel
+              </div>
+            </div>
+            <SimpleTable
+              columns={ItemStockStatsColumns}
+              title={"Article Stock Statistics"}
+              rows={ArticleStatsState.data.StockStats}
+              ReportTable={true}
+            />
+          </>
         )}
       {ArticleStatsState.loading === false &&
         ArticleStatsState.data.StockStats &&
         ArticleId && (
-          <SimpleTable
-            columns={ItemStatsColumns}
-            title={"Article Sales Statistics"}
-            rows={ArticleStatsState.data.trans}
-          />
+          <>
+            <div className="w-full flex justify-end px-2 py-3">
+              <div
+                className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+                onClick={() => {
+                  exportToExcel(ArticleStatsState.data.trans, "MyExcelFile");
+                }}
+              >
+                Convert to Excel
+              </div>
+            </div>
+            <SimpleTable
+              columns={ItemStatsColumns}
+              title={"Article Sales Statistics"}
+              rows={ArticleStatsState.data.trans}
+            />
+          </>
         )}
       {/* <SearchableTable
         setOpenEditModal={setOpenEditModal}
