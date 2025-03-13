@@ -12,6 +12,7 @@ import { fetchCompanies } from "../../store/Slices/CompanySlice";
 import { fetchRMStats } from "../../store/Slices/RMStatsSlice";
 import { RM_Stat_Columns } from "../../utils/ColumnsData/RM_Stat_Columns";
 import UpdateRMStockModal from "../../components/Modals/UpdateRMStockModal";
+import exportToExcel from "../../utils/ExportToExcel";
 
 const RM_Stats = () => {
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
@@ -36,6 +37,25 @@ const RM_Stats = () => {
     <div className="relative">
       <Navbar />
       <CompanyNav />
+      <div className="w-full flex justify-end px-2 py-3">
+        <div
+          className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+          onClick={() => {
+            exportToExcel(
+              RMStatsState.data.filter((dt) =>
+                SearchText === ""
+                  ? true
+                  : dt.supplier_name
+                      .toLowerCase()
+                      .startsWith(SearchText.toLowerCase())
+              ),
+              "MyExcelFile"
+            );
+          }}
+        >
+          Convert to Excel
+        </div>
+      </div>
       <div className="w-full mt-2 flex justify-center items-center">
         <SearchableTable
           setOpenEditModal={setOpenEditModal}

@@ -11,6 +11,7 @@ import { ExpenseColumns } from "../../utils/ColumnsData/ExpenseColumns";
 import EditExpenseModal from "../../components/Modals/EditExpenseModal";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { DeleteExpensesApi } from "../../Https";
+import exportToExcel from "../../utils/ExportToExcel";
 
 const ReportInfo = () => {
   const [OpenExpenseReport, setOpenExpenseReport] = useState(false);
@@ -54,6 +55,23 @@ const ReportInfo = () => {
           setToDate={setToDate}
           setFromDate={setFromDate}
         />
+      </div>
+      <div className="w-full flex justify-end px-2 py-3">
+        <div
+          className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+          onClick={() => {
+            exportToExcel(
+              ExpenseState.data.filter((dt) =>
+                SearchText === ""
+                  ? true
+                  : dt.desc.toLowerCase().startsWith(SearchText.toLowerCase())
+              ),
+              "MyExcelFile"
+            );
+          }}
+        >
+          Convert to Excel
+        </div>
       </div>
       {OpenExpenseReport && ExpenseState.data && (
         <div className="w-full mt-6 flex justify-center items-center">

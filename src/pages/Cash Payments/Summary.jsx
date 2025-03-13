@@ -48,6 +48,14 @@ const Summary = () => {
           Add Amount
         </div>
       </div>
+      <div
+        className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+        onClick={() => {
+          exportToExcel(AccountState.data, "Stock Statistics");
+        }}
+      >
+        Convert to Excel
+      </div>
       <div className="">
         <SimpleTable
           columns={CashSummaryColumns}

@@ -18,6 +18,7 @@ import { CgArrowsExchangeAltV } from "react-icons/cg";
 import { CompleteLedgerColumns } from "../../utils/ColumnsData/CompleteLedgerColumns";
 import moment from "moment";
 import DataLoader from "../../components/Loaders/DataLoader";
+import exportToExcel from "../../utils/ExportToExcel";
 
 const AccountSummary = () => {
   const [OpenTypeModal, setOpenTypeModal] = useState(false);
@@ -76,6 +77,17 @@ const AccountSummary = () => {
           setValue={setToNewDate}
           required
         />
+      </div>
+
+      <div className="w-full flex justify-end px-2 py-3">
+        <div
+          className=" px-3 py-2 border-2 border-black rounded-full hover:bg-black hover:text-white transition-all ease-in-out duration-500 cursor-pointer"
+          onClick={() => {
+            exportToExcel(LedgerData.data, "MyExcelFile");
+          }}
+        >
+          Convert to Excel
+        </div>
       </div>
       <div className="flex justify-center items-center">
         {LedgerData.loading ? (
