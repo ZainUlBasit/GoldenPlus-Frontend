@@ -48,12 +48,6 @@ const CustomerNavData = [
     link: "/customer/edit-invoice",
     icon: BiSolidReport,
   },
-  {
-    title: "Add Opening Balance",
-    type: "modal",
-    link: "/",
-    icon: BiSolidReport,
-  },
 ];
 
 export default CustomerNavData;
